@@ -2,6 +2,8 @@ package com.example.graydon.chronometer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -23,6 +25,8 @@ public class StoredEventList {
      * * @return the list of events saved on user's phone.
     **/
     public static ArrayList<Event> getAllEvents(Context appContext) {
+        if (appContext == null)
+            throw new NullPointerException("App context cannot be null");
         SharedPreferences sharedPreferences = appContext.getSharedPreferences(USER_EVENTS, Context.MODE_PRIVATE);
         String jsonOfEvents = sharedPreferences.getString(EVENTS,null);
         if (jsonOfEvents == null)
@@ -38,6 +42,8 @@ public class StoredEventList {
      * @return the event found at the given index
      */
     public static Event getEvent(Context appContext, int location){
+        if (appContext == null)
+            throw new NullPointerException("App context cannot be null");
         ArrayList<Event> events = getAllEvents(appContext);
         if (location < 0 || location >= events.size())
             throw new IndexOutOfBoundsException(location + " is out of range. The events list has a size of " + events.size());
@@ -50,6 +56,8 @@ public class StoredEventList {
      * @param eventToAdd the event to be added to the saved events
      */
     public static void addEvent(Context appContext,Event eventToAdd){
+        if (appContext == null)
+            throw new NullPointerException("App context cannot be null");
         if (eventToAdd == null)
             throw new NullPointerException("Passed in a null event");
         ArrayList<Event> events = getAllEvents(appContext);
@@ -64,6 +72,8 @@ public class StoredEventList {
      */
 
     public static void removeEvent(Context appContext,int location){
+        if (appContext == null)
+            throw new NullPointerException("App context cannot be null");
         ArrayList<Event> events = getAllEvents(appContext);
         if (location < 0 || location >= events.size())
             throw new IndexOutOfBoundsException(location + " is out of range. The events list has a size of " + events.size());
@@ -76,7 +86,14 @@ public class StoredEventList {
      * PRIVATE STATIC METHODS
      *
      **************************************************************************/
+    /**
+     * Saves an event list using shared preferences
+     * @param appContext the application context (used for sharedPreferences)
+     * @param eventListToSave the list of events to be saved
+     */
     private static void saveEventList(Context appContext, ArrayList<Event> eventListToSave){
+        if (appContext == null)
+            throw new NullPointerException("App context cannot be null");
         SharedPreferences sharedPreferences = appContext.getSharedPreferences(USER_EVENTS, Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         String jsonOfEvents = gson.toJson(eventListToSave);
