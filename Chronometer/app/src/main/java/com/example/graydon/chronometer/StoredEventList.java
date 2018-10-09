@@ -70,7 +70,6 @@ public class StoredEventList {
      * @param appContext the application context (used for sharedPreferences)
      * @param location the location of the event to remove
      */
-
     public static void removeEvent(Context appContext,int location){
         if (appContext == null)
             throw new NullPointerException("App context cannot be null");
@@ -79,6 +78,16 @@ public class StoredEventList {
             throw new IndexOutOfBoundsException(location + " is out of range. The events list has a size of " + events.size());
         events.remove(location);
         saveEventList(appContext,events);
+    }
+
+    /**
+     * Removes all of the saved events
+     * @param appContext
+     */
+    public static void removeAllEvents(Context appContext){
+        if (appContext == null)
+            throw new NullPointerException("App context cannot be null");
+        saveEventList(appContext, new ArrayList<Event>());
     }
 
     /**************************************************************************
@@ -100,6 +109,4 @@ public class StoredEventList {
         sharedPreferencesEditor.putString(EVENTS,jsonOfEvents);
         sharedPreferencesEditor.apply();
     }
-
-
 }
