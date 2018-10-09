@@ -1,4 +1,4 @@
 package com.example.graydon.chronometer;
 
-public class DurationActivity {
+public class Event {
 }
