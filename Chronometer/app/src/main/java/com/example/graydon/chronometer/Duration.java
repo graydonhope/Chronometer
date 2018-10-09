@@ -1,12 +1,16 @@
 package com.example.graydon.chronometer;
 
+import java.util.TimerTask;
+
 public class Duration {
     private long seconds;
     private long minutes;
     private long hours;
 
-    public Duration(long hours, long minutes, long seconds){
-
+    public Duration(int hours, int minutes, int seconds){
+        this.seconds = seconds * 1000;
+        this.minutes = minutes * 60000;
+        this.hours = hours * 3600000;
     }
 
     public long getSeconds(){
@@ -21,15 +25,21 @@ public class Duration {
         return hours;
     }
 
-    public void setSeconds(long seconds){
-        this.seconds = seconds;
+    public void setSeconds(int seconds){
+        this.seconds = seconds * 1000;
     }
 
-    public void setMinutes(long minutes){
-        this.minutes = minutes;
+    public void setMinutes(int minutes){
+        this.minutes = minutes * 60000;
     }
 
-    public void setHours(long hours){
-        this.hours = hours;
+    public void setHours(int hours){
+        this.hours = hours * 3600000;
     }
+
+    public long getTotalTime(){
+        return (this.seconds + this.minutes + this.hours);
+    }
+
 }
+
