@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -90,6 +92,25 @@ public class StoredEventList {
         saveEventList(appContext, new ArrayList<Event>());
     }
 
+    /**
+     * Checks the save events to see if the specified event name already exists
+     * @param appContext the app context of the application
+     * @param name the name to search
+     * @return true if the name already exists in saved events, otherwise false
+     */
+    public static boolean isInEvents(Context appContext,String name){
+        if (name == null)
+            return false;
+        if (appContext == null)
+            throw new NullPointerException("App context cannot be null");
+        ArrayList<Event> events = getAllEvents(appContext);
+        for(int i = 0; i < events.size();i++){
+           // if (events.get(i).getName().trim().toLowerCase().equals(name.trim().toLowerCase())) Will uncomment once getName is implemented
+                return true;
+        }
+        return false;
+    }
+
     /**************************************************************************
      *
      * PRIVATE STATIC METHODS
@@ -103,6 +124,8 @@ public class StoredEventList {
     private static void saveEventList(Context appContext, ArrayList<Event> eventListToSave){
         if (appContext == null)
             throw new NullPointerException("App context cannot be null");
+        if (eventListToSave == null)
+            throw new NullPointerException("Passed in null event list");
         SharedPreferences sharedPreferences = appContext.getSharedPreferences(USER_EVENTS, Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         String jsonOfEvents = gson.toJson(eventListToSave);
