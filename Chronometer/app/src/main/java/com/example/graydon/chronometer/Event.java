@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Event {
-	private ArrayList <Task> tasks;
+	private ArrayList<Task> tasks;
 	private String eventName;
 	private Iterator <Task> iter;
 	public Event (String eventName){
@@ -20,7 +20,7 @@ public class Event {
 	}
 	//removes the first occurence of the specified task. if false returned object was not found
 	public boolean removeTask (Task task){
-		return tasks.removeTask (task);
+		return tasks.remove (task);
 	}
 	//throws IndecOutOfBounds if tasks does not have a next
 	//throws IllegalStateException if tasks list is empty
@@ -44,7 +44,7 @@ public class Event {
 		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
 		
 		int index=-1;
-		Task=temp;
+		Task temp=null;
 		while (index <location+1){
 			temp=iter.next ();
 			index ++;
@@ -107,7 +107,7 @@ public class Event {
 		return eventName;
 	}
 	public int numberOfTasks (){
-		tasks.size ();
+		return tasks.size ();
 	}
 
 
