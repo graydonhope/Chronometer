@@ -26,14 +26,23 @@ public class Duration {
     }
 
     public void setSeconds(int seconds){
+        if(seconds <= 0){
+            throw new IllegalArgumentException("Cannot enter a value less than or equal to 0");
+        }
         this.seconds = seconds * 1000;
     }
 
     public void setMinutes(int minutes){
+        if(minutes <= 0){
+            throw new IllegalArgumentException("Cannot enter a value less than or equal to 0");
+        }
         this.minutes = minutes * 60000;
     }
 
     public void setHours(int hours){
+        if(hours <= 0){
+            throw new IllegalArgumentException("Cannot enter a value less than or equal to 0");
+        }
         this.hours = hours * 3600000;
     }
 
