@@ -1,9 +1,9 @@
 package com.example.graydon.chronometer;
 
 public class Task {
-    String name;
-    Duration durationOfTask;
-    boolean isComplete;
+    private String name;
+    private Duration durationOfTask;
+    private boolean isComplete;
 
     public Task(String name, Duration durationOfTask){
         this.name = name;
