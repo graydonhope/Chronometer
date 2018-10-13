@@ -52,13 +52,20 @@ public class Event {
 		iter=tasks.iterator ();
 		temp.setName (name);
 	}
-	public void editTaskDuration (int location, Duration duration){
+	public void editTaskHours (int location, int hours ){
 		
 		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
 		
 		Task tempTask = getTask (location);
-		tempTask.setDuration (duration);
+		tempTask.setHours (hours);
 	}
+	public void editTaskMinutes (int location, int minutes ){
+		
+		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
+		
+		Task tempTask = getTask (location);
+		tempTask.setMinutes (minutes);
+	} 
 	public void editTaskIsComplete (int location, boolean isComplete){
 
 		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
@@ -67,22 +74,28 @@ public class Event {
 		tempTask.setIsComplete (isComplete);
 
 	}
-	public Duration eventDuration (){
-		Duration temp;
-		Duration totalDur;
+	public long totalMinutes(){
+		long temp=0;
 		while (iter.hasNext ()){
-			temp=iter.next ().getDuration ();
-			totalDur.setDuration(totalDur.getDuration()+temp.getDuration ());
+			temp=temp+iter.next ().getMinutes_inMilli ();
 		}
 		iter=tasks.iterator ();
-		return totalDur;
+		return temp;
 
 	} 
+	public long totalHours (){
+		long temp=0;
+		while (iter.hasNext ()){
+			temp=temp+iter.next ().getHours_inMilli ();
+		}
+		iter=tasks.iterator ();
+		return temp;	
+	}
 
 
 	public Task nextTask (boolean currentTaskIsComplete){
 		if (currentTaskIsComplete==false){
-			throw new IncompleteTaskException ("Task is Incomplete");
+			throw new IllegalArgumentException ("Task is Incomplete");
 		}
 		if (!(iter.hasNext ())){
 			throw new IndexOutOfBoundsException ();
@@ -97,12 +110,9 @@ public class Event {
 		tasks.size ();
 	}
 
+
 }
-public class IncompleteTaskException extends Exception {
-	public IncompleteTaskException (String message){
-		super (message);
-	}
-}
+
 
 
 
