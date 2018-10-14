@@ -3,63 +3,80 @@ package com.example.graydon.chronometer;
 public class Task {
     private String name;
     private boolean isComplete;
-    private long minutes_inMilli;
-    private long hours_inMilli;
+    private Duration startDuration, endDuration;
+    private int reminderTime;
 
-    public Task(String name, int hours, int minutes){
-        if(hours < 0 || hours > 23 || minutes > 59 || minutes < 0){
-            throw new IllegalArgumentException("Hours must be in 0-23 range, Minutes must be in 0-59 range");
-        }
+    public Task(String name, Duration startTime, Duration endTime, int reminderTimeMinutes) {
+        this.reminderTime = reminderTimeMinutes;
         this.name = name;
         isComplete = false;
-        this.minutes_inMilli = minutes * 60000;
-        this.hours_inMilli = hours * 3600000;
+        this.startDuration = startTime;
+        this.endDuration = endTime;
     }
-    public boolean getIsComplete(){
+
+    public boolean getIsComplete() {
         return this.isComplete;
-    }
-
-    public String getName(){
-        return this.name;
-    }
-
-
-    public long getTaskTime_inMilli(){
-        return (this.hours_inMilli + this.minutes_inMilli);
-    }
-
-
-    public void setName(String name){
-        this.name = name;
-    }
-
-
-    public void setTaskTime(int hours, int minutes){
-        setMinutes(minutes);
-        setHours(hours);
-    }
-
-    public String toString(){
-        return "Name of task: " + name;
     }
 
     public void setIsComplete(boolean isComplete){
         this.isComplete = isComplete;
     }
 
-    public long getMinutes_inMilli(){
-        return this.minutes_inMilli;
+    public Duration getStartDuration(){
+        return this.startDuration;
     }
 
-    public long getHours_inMilli(){
-        return this.hours_inMilli;
+    public Duration getEndDuration(){
+        return this.endDuration;
     }
 
-    public void setHours(int hours){
-        this.hours_inMilli = hours * 3600000;
+    public int getStartHour(){
+        return this.startDuration.getHour();
     }
 
-    public void setMinutes(int minutes){
-        this.minutes_inMilli = minutes * 60000;
+    public int getEndHour(){
+        return this.endDuration.getHour();
     }
+
+    public int getStartMinute(){
+        return this.startDuration.getMinute();
+    }
+
+    public int getEndMinute(){
+        return this.endDuration.getMinute();
+    }
+
+    public void setStartHour(int startHour){
+        this.startDuration.setHour(startHour);
+    }
+
+    public void setStartTimeMinute(int startTimeMinute){
+        this.startDuration.setMinute(startTimeMinute);
+    }
+
+    public void setEndTimeMinute(int endTimeMinute){
+        this.endDuration.setMinute(endTimeMinute);
+    }
+
+    public void setEndHour(int endHour){
+        this.endDuration.setHour(endHour);
+    }
+
+    public int getReminderTimeMinutes(){
+        return this.reminderTime;
+    }
+
+    public void setReminderMinutes(int reminderTime){
+        this.reminderTime = reminderTime;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
 }
+
