@@ -27,7 +27,9 @@ public class NewTaskActivity extends AppCompatActivity {
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerStart;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerEnd;
     private int startTimeHour = -1, endTimeHour = -1, startTimeMinute = -1, endTimeMinute = -1, reminderTime = -1;
-    boolean validNameEntered, validTimeframe, validRemindertime;
+    private boolean validNameEntered, validTimeframe, validRemindertime;
+    private NewTaskModel taskModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
