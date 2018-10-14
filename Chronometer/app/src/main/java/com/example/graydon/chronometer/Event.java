@@ -52,7 +52,7 @@ public class Event implements Parcelable{
 		
 		int tempIndex=tasks.indexOf (task);
 		
-		if (tempIndex==-1){ throw new IllegalArgumentException (); }
+		if (tempIndex==-1){ throw new NoSuchElementException (); }
 
 		tasks.add (index, removeTask(tempIndex));
 	}
@@ -63,29 +63,36 @@ public class Event implements Parcelable{
 		
 		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
 		
-		int index=-1;
-		Task temp=null;
-		while (index <location+1){
-			temp=iter.next ();
-			index ++;
-		}
-		iter=tasks.iterator ();
-		temp.setName (name);
+		int index = tasks.indexOf (name);
+		if (index == -1) { throw new NoSuchElementException ();}
+		Task task=getTask  (index);
+		tmp.setName (name);
+
 	}
+
+	/*
 	public void editTaskHours (int location, int hours ){
 		
 		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
 		
 		Task tempTask = getTask (location);
-		tempTask.setHours (hours);
+		tempTask.setHour (hours);
 	}
+
+
+
+
 	public void editTaskMinutes (int location, int minutes ){
 		
 		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
 		
 		Task tempTask = getTask (location);
 		tempTask.setMinutes (minutes);
-	} 
+	}
+
+	*/
+
+
 	public void editTaskIsComplete (int location, boolean isComplete){
 
 		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
@@ -94,23 +101,32 @@ public class Event implements Parcelable{
 		tempTask.setIsComplete (isComplete);
 
 	}
+
+	/*
+
+
+
 	public long totalMinutes(){
 		long temp=0;
-		while (iter.hasNext ()){
-			temp=temp+iter.next ().getMinutes_inMilli ();
+		Task tempTask;
+		for (int i=0; i <numberOfTasks();i++){
+			tempTask=tasks.get (i);
+			temp=temp+tempTask.getMinutes_inMilli();
 		}
-		iter=tasks.iterator ();
 		return temp;
 
 	} 
 	public long totalHours (){
 		long temp=0;
-		while (iter.hasNext ()){
-			temp=temp+iter.next ().getHours_inMilli ();
+		Task tempTask;
+		for (int i=0; i <numberOfTasks();i++){
+			tempTask=tasks.get (i);
+			temp=temp+tempTask.getHours_inMilli();
 		}
-		iter=tasks.iterator ();
-		return temp;	
-	}
+		return temp;
+
+
+ */
 
 
 	public Task nextTask (boolean currentTaskIsComplete){
