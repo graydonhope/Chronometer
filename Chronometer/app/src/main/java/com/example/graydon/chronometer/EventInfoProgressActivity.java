@@ -29,12 +29,11 @@ public class EventInfoProgressActivity extends AppCompatActivity {
             }
             @Override
             public void onFinish() {
-                //Move onto next task
+                //Move onto next task //CREATE NEW TIMER METHOD
                 Task nextTask = model.nextTask();
                 timeLeftTextView.setText("done");
             }
         }.start();
-        timer.onTick() = test();
 //        Log.d("!!!!!!!!!","This is the event: " + event);
     }
 
@@ -46,9 +45,7 @@ public class EventInfoProgressActivity extends AppCompatActivity {
         Button completedButton = findViewById(R.id.completedButton);
         completedButton.setBackgroundColor(Color.parseColor("#3ba039"));
     }
-    public void test(long mil) {
 
-    }
 
 
 }
