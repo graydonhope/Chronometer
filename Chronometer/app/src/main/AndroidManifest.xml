@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".EventInfoProgressActivity">
+        <activity android:name=".NewTaskActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,7 @@
         </activity>
         <!--<activity android:name=".EventInfoProgressActivity" />-->
         <activity android:name=".EventInfoActivity" />
-        <activity android:name=".NewTaskActivity"></activity>
+        <!--<activity android:name=".NewTaskActivity"></activity> />-->
 
     </application>
 
