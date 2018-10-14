@@ -69,30 +69,20 @@ public class Event implements Parcelable{
 		tmp.setName (name);
 
 	}
-
-	/*
 	public void editTaskHours (int location, int hours ){
 		
 		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
 		
 		Task tempTask = getTask (location);
-		tempTask.setHour (hours);
+		tempTask.setHours (hours);
 	}
-
-
-
-
 	public void editTaskMinutes (int location, int minutes ){
 		
 		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
 		
 		Task tempTask = getTask (location);
 		tempTask.setMinutes (minutes);
-	}
-
-	*/
-
-
+	} 
 	public void editTaskIsComplete (int location, boolean isComplete){
 
 		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
@@ -101,11 +91,6 @@ public class Event implements Parcelable{
 		tempTask.setIsComplete (isComplete);
 
 	}
-
-	/*
-
-
-
 	public long totalMinutes(){
 		long temp=0;
 		Task tempTask;
@@ -125,8 +110,6 @@ public class Event implements Parcelable{
 		}
 		return temp;
 
-
- */
 
 
 	public Task nextTask (boolean currentTaskIsComplete){
