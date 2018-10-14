@@ -1,8 +1,11 @@
 package com.example.graydon.chronometer;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Event {
+public class Event implements Parcelable{
 	private ArrayList<Task> tasks;
 	private String eventName;
 	private Iterator <Task> iter;
@@ -11,6 +14,23 @@ public class Event {
 		tasks=new ArrayList<Task> ();
 		iter=tasks.iterator ();
 	}
+
+	protected Event(Parcel in) {
+		eventName = in.readString();
+	}
+
+	public static final Creator<Event> CREATOR = new Creator<Event>() {
+		@Override
+		public Event createFromParcel(Parcel in) {
+			return new Event(in);
+		}
+
+		@Override
+		public Event[] newArray(int size) {
+			return new Event[size];
+		}
+	};
+
 	public void addTask (Task task){
 		tasks.add (task);
 	}
@@ -111,6 +131,15 @@ public class Event {
 	}
 
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(eventName);
+	}
 }
 
 
