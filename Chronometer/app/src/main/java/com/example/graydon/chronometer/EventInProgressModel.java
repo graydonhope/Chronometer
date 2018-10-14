@@ -16,13 +16,24 @@ public class EventInProgressModel {
 
     public Calendar getCurrentTaskStartTime(){
         Calendar currentTaskStartTime = Calendar.getInstance();
-//        currentTaskStartTime.set(Calendar.HOUR_OF_DAY,currentTask.getStartTime().getHour());
-//        currentTaskStartTime.set(Calendar.MINUTE,currentTask.getEndTime());
+        currentTaskStartTime.set(Calendar.HOUR_OF_DAY,currentTask.getStartTimeHour());
+        currentTaskStartTime.set(Calendar.MINUTE,currentTask.getStartTimeMinute());
+        currentTaskStartTime.set(Calendar.SECOND,0);
+        currentTaskStartTime.set(Calendar.MILLISECOND,0);
         return currentTaskStartTime;
     }
-
-    public long currentTimeLeft(){
-//        long startTimeInMili = getCurrentTaskStartTime();
-        return 0;
+    public Calendar getCurrentTaskEndTime(){
+        Calendar currentTaskEndTime = Calendar.getInstance();
+        currentTaskEndTime.set(Calendar.HOUR_OF_DAY,currentTask.getStartTimeHour());
+        currentTaskEndTime.set(Calendar.MINUTE,currentTask.getStartTimeMinute());
+        currentTaskEndTime.set(Calendar.SECOND,0);
+        currentTaskEndTime.set(Calendar.MILLISECOND,0);
+        return currentTaskEndTime;
     }
+
+    public long getCurrentTimeLeft(){
+        return getCurrentTaskEndTime().getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
+    }
+
+
 }
