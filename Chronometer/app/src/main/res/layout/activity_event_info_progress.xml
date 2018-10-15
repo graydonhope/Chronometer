@@ -7,7 +7,6 @@
     android:background="#9D44DE"
     tools:context=".EventInfoProgressActivity">
 
-
     <TextView
         android:id="@+id/timeLeftTextView"
         android:layout_width="wrap_content"
@@ -23,6 +22,7 @@
         android:textColor="@android:color/white"
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/endTaskButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -68,9 +68,9 @@
         android:layout_marginBottom="15dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:background="@android:color/transparent"
-        android:text="End Task"
+        android:background="#843EAF"
         android:onClick="onCancelButtonClick"
+        android:text="End Task"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

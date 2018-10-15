@@ -1,22 +1,19 @@
 package com.example.graydon.chronometer;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Event implements Parcelable{
-	private ArrayList<Task> tasks;
-	private String eventName;
-	private Iterator <Task> iter;
-	public Event (String eventName){
-		this.eventName=eventName;
-		tasks=new ArrayList<Task> ();
-		iter=tasks.iterator ();
-	}
+	private ArrayList<Task> tasks ;
+	private int currentTaskIndex = -1;
 
+    public Event(){
+        this.tasks = new ArrayList<>();
+    }
 	protected Event(Parcel in) {
-		eventName = in.readString();
 	}
 
 	public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -33,7 +30,8 @@ public class Event implements Parcelable{
 
 	public void addTask (Task task){
 		tasks.add (task);
-	}
+
+    }
 	//removes object at specified index
 	public Task removeTask (int index){
 		return tasks.remove (index);
@@ -56,76 +54,80 @@ public class Event implements Parcelable{
 
 		tasks.add (index, removeTask(tempIndex));
 	}
-	public void editTaskName (int location, String name){
-		if (name==null){  throw new NullPointerException ();}
-		
-		if (tasks.isEmpty ()){  throw new IllegalStateException();}
-		
-		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
-		
-		int index=-1;
-		Task temp=null;
-		while (index <location+1){
-			temp=iter.next ();
-			index ++;
-		}
-		iter=tasks.iterator ();
-		temp.setName (name);
-	}
-	public void editTaskHours (int location, int hours ){
-		
-		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
-		
-		Task tempTask = getTask (location);
-		tempTask.setHours (hours);
-	}
-	public void editTaskMinutes (int location, int minutes ){
-		
-		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
-		
-		Task tempTask = getTask (location);
-		tempTask.setMinutes (minutes);
-	} 
-	public void editTaskIsComplete (int location, boolean isComplete){
+//	public void editTaskName (int location, String name){
+//		if (name==null){  throw new NullPointerException ();}
+//
+//		if (tasks.isEmpty ()){  throw new IllegalStateException();}
+//
+//		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
+//
+//		int index=-1;
+//		Task temp=null;
+//		while (index <location+1){
+//			temp=iter.next ();
+//			index ++;
+//		}
+//		iter=tasks.iterator ();
+//		temp.setName (name);
+//	}
+//	public void editTaskHours (int location, int hours ){
+//
+//		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
+//
+//		Task tempTask = getTask (location);
+//		tempTask.setHours (hours);
+//	}
+//	public void editTaskMinutes (int location, int minutes ){
+//
+//		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
+//
+//		Task tempTask = getTask (location);
+//		tempTask.setMinutes (minutes);
+//	}
+//	public void editTaskIsComplete (int location, boolean isComplete){
+//
+//		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
+//
+//		Task tempTask = getTask (location);
+//		tempTask.setIsComplete (isComplete);
+//
+//	}
+//	public long totalMinutes(){
+//		long temp=0;
+//		while (iter.hasNext ()){
+//			temp=temp+iter.next ().getMinutes_inMilli ();
+//		}
+//		iter=tasks.iterator ();
+//		return temp;
+//
+//	}
+//	public long totalHours (){
+//		long temp=0;
+//		while (iter.hasNext ()){
+//			temp=temp+iter.next ().getHours_inMilli ();
+//		}
+//		iter=tasks.iterator ();
+//		return temp;
+//	}
 
-		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
-
-		Task tempTask = getTask (location);
-		tempTask.setIsComplete (isComplete);
-
-	}
-	public long totalMinutes(){
-		long temp=0;
-		while (iter.hasNext ()){
-			temp=temp+iter.next ().getMinutes_inMilli ();
-		}
-		iter=tasks.iterator ();
-		return temp;
-
-	} 
-	public long totalHours (){
-		long temp=0;
-		while (iter.hasNext ()){
-			temp=temp+iter.next ().getHours_inMilli ();
-		}
-		iter=tasks.iterator ();
-		return temp;	
-	}
-
-
+    public boolean hasNext(){
+	    return (currentTaskIndex + 1) < tasks.size();
+    }
 	public Task nextTask (boolean currentTaskIsComplete){
-		if (currentTaskIsComplete==false){
-			throw new IllegalArgumentException ("Task is Incomplete");
-		}
-		if (!(iter.hasNext ())){
-			throw new IndexOutOfBoundsException ();
-		}
-		return iter.next ();		
+	    currentTaskIndex ++;
+
+        if (currentTaskIndex >= tasks.size())
+	        throw new IndexOutOfBoundsException("No more tasks");
+//		if (currentTaskIsComplete==false){
+//			throw new IllegalArgumentException ("Task is Incomplete");
+//		}
+//		if (!(iter.hasNext ())){
+//			throw new IndexOutOfBoundsException ();
+//		}
+		return tasks.get(currentTaskIndex);
 
 	}
-	public String getName (){
-		return eventName;
-	}
+
 	public int numberOfTasks (){
 		return tasks.size ();
 	}
@@ -138,7 +140,6 @@ public class Event implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(eventName);
 	}
 }
 
