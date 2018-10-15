@@ -3,6 +3,7 @@ package com.example.graydon.chronometer;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -181,8 +183,14 @@ public class NewTaskActivity extends AppCompatActivity {
                 Task newTask = new Task(taskName, startTime, endTime, reminderTime);
                 taskModel.saveTask(this, newTask);
                 Log.d("!!!!!!!!!!!", "addButtonClicked: NEW Task ADDED and Saved!!");
-
+                Event event = new Event();
+                event.addTask(newTask);
+                Intent intent = new Intent(this, EventInfoProgressActivity.class);
+                intent.putExtra("Event", event);
             }
+        }
+        else{
+            Toast.makeText(this, "Unable to add Task ", Toast.LENGTH_LONG).show();
         }
     }
 }
