@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Event implements Parcelable{
 	private ArrayList<Task> tasks ;
@@ -47,10 +48,10 @@ public class Event implements Parcelable{
 	}
 	public void manageTask (int index, Task task){
 		if (!(index > -1 && index < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
-		
+
 		int tempIndex=tasks.indexOf (task);
-		
-		if (tempIndex==-1){ throw new IllegalArgumentException (); }
+
+		if (tempIndex==-1){ throw new NoSuchElementException(); }
 
 		tasks.add (index, removeTask(tempIndex));
 	}
@@ -113,35 +114,96 @@ public class Event implements Parcelable{
     public boolean hasNext(){
 	    return (currentTaskIndex + 1) < tasks.size();
     }
-	public Task nextTask (boolean currentTaskIsComplete){
-	    currentTaskIndex ++;
-
-        if (currentTaskIndex >= tasks.size())
-	        throw new IndexOutOfBoundsException("No more tasks");
-//		if (currentTaskIsComplete==false){
-//			throw new IllegalArgumentException ("Task is Incomplete");
-//		}
-//		if (!(iter.hasNext ())){
-//			throw new IndexOutOfBoundsException ();
-//		}
+	public Task nextTask (boolean currentTaskIsComplete) {
+		currentTaskIndex++;
+		if(currentTaskIndex >= tasks.size()){
+			throw new IndexOutOfBoundsException("No more tasks.");
+		}
 		return tasks.get(currentTaskIndex);
+	}
+
+	/*
+	public void editTaskName (int location, String name){
+		if (name==null){  throw new NullPointerException ();}
+
+		if (tasks.isEmpty ()){  throw new IllegalStateException();}
+
+		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
+
+		int index = tasks.indexOf (name);
+		if (index == -1) { throw new NoSuchElementException ();}
+		Task task=getTask  (index);
+		tmp.setName (name);
 
 	}
 
-	public int numberOfTasks (){
-		return tasks.size ();
+	*/
+
+	/*
+	public void editTaskHours (int location, int hours ){
+
+		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
+
+		Task tempTask = getTask (location);
+		tempTask.setHour (hours);
 	}
 
 
-	@Override
-	public int describeContents() {
-		return 0;
+
+
+	public void editTaskMinutes (int location, int minutes ){
+
+		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
+
+		Task tempTask = getTask (location);
+		tempTask.setMinutes (minutes);
 	}
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
+	*/
+
+
+
+	/*
+
+
+
+	public long totalMinutes(){
+		long temp=0;
+		Task tempTask;
+		for (int i=0; i <numberOfTasks();i++){
+			tempTask=tasks.get (i);
+			temp=temp+tempTask.getMinutes_inMilli();
+		}
+		return temp;
+
 	}
-}
+	public long totalHours (){
+		long temp=0;
+		Task tempTask;
+		for (int i=0; i <numberOfTasks();i++){
+			tempTask=tasks.get (i);
+			temp=temp+tempTask.getHours_inMilli();
+		}
+		return temp;
+
+
+ */
+
+		public int numberOfTasks () {
+			return tasks.size();
+		}
+
+
+		@Override
+		public int describeContents () {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel (Parcel dest,int flags){
+		}
+	}
+
 
 
 

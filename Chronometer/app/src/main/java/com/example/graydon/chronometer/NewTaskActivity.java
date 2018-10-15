@@ -18,16 +18,19 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+
 public class NewTaskActivity extends AppCompatActivity {
 
     //Activity - where the UI gets updated!! No logic in here
     private TextView startDateDisplay;
     private TextView endDateDisplay;
-    private String name;
+    private String taskName;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerStart;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerEnd;
     private int startTimeHour = -1, endTimeHour = -1, startTimeMinute = -1, endTimeMinute = -1, reminderTime = -1;
-    boolean validNameEntered, validTimeframe, validRemindertime;
+    private boolean validNameEntered, validTimeframe, validRemindertime;
+    private NewTaskModel taskModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,10 @@ public class NewTaskActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     *
+     * @param view
+     */
     public void onEndTimeClick(View view){
         Calendar calendar = Calendar.getInstance();
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
@@ -123,38 +130,59 @@ public class NewTaskActivity extends AppCompatActivity {
         spinner.setSelection(0);
     }
 
+
     public void isValidTimeframe(){
         if(startTimeHour != -1 && startTimeMinute != -1 && endTimeHour != -1 && endTimeMinute != -1){
-            validTimeframe = true;
+            Log.d("!!!!!!!!!", "isValidTimeframe: startTime Minutes" + startTimeMinute + " endTime Minutes " + endTimeMinute);
+            if((startTimeHour < endTimeHour) || ((startTimeHour <= endTimeHour) && startTimeMinute < endTimeMinute)){
+                validTimeframe = true;
+            }
+            else{
+                validTimeframe = false;
+            }
         }
+
     }
 
     public void isValidNameEntered(){
         EditText taskNameEditText= (EditText) findViewById(R.id.taskNameEditText);
-        String taskName = taskNameEditText.getText().toString();
-        if(taskName != null){
+        taskName = taskNameEditText.getText().toString();
+        if(!taskName.equals("")){
             validNameEntered = true;
+        }
+        else{
+            validNameEntered = false;
         }
     }
 
     public void isValidReminder(){
-        EditText reminder_number = (EditText) findViewById(R.id.reminderNumber_Number);
+        TextView reminder_number = (TextView) findViewById(R.id.reminderTime_textView);
         Integer reminder_amount = Integer.parseInt(reminder_number.getText().toString());
-        if(reminderTime != -1){
+        reminderTime = (int) reminder_amount;
+        if(!(reminderTime == -1)){
             validRemindertime = true;
+        }
+        else{
+            validRemindertime = false;
         }
     }
 
     public void addButtonClicked(View view){
         //create new task - need name, hours, minutes, reminder
-
-        isValidNameEntered();
-        isValidTimeframe();
-        isValidReminder();
+        isValidNameEntered(); isValidReminder(); isValidTimeframe();
+        Log.d("!!!!After methods ", "addButtonClicked: ValidName:" + validNameEntered + " ValidReminder: " + validRemindertime + " valid TimeFrame: " + validTimeframe);
         if(validNameEntered && validTimeframe && validRemindertime){
             Duration startTime = new Duration(this.startTimeHour, this.startTimeMinute);
             Duration endTime = new Duration(this.endTimeHour, this.endTimeMinute);
-            Task newTask = new Task(name, startTime, endTime, reminderTime);
+            taskModel = new NewTaskModel(this, startTime, endTime, taskName);
+
+            if(!(taskModel.checkNameUnique()) && taskModel.checkTimeFrame()){
+                Log.d("!!!!!XXX", "addButtonClicked: Inside seoncd if");
+                Task newTask = new Task(taskName, startTime, endTime, reminderTime);
+                taskModel.saveTask(this, newTask);
+                Log.d("!!!!!!!!!!!", "addButtonClicked: NEW Task ADDED and Saved!!");
+
+            }
         }
     }
 }

@@ -10,19 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".EventInfoProgressActivity">
+        <activity android:name="NewTaskActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".EventInfoProgressActivity" />-->
+        <activity android:name=".EventInfoProgressActivity" />
         <activity android:name=".EventInfoActivity" />
-        <activity android:name=".NewTaskActivity"></activity>
         <receiver android:name=".AlarmReceiver"/>
-
-
     </application>
 
 </manifest>

@@ -14,10 +14,18 @@ public class Task {
         this.endDuration = endTime;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean getIsComplete() {
         return this.isComplete;
     }
 
+    /**
+     *
+     * @param isComplete
+     */
     public void setIsComplete(boolean isComplete){
         this.isComplete = isComplete;
     }
