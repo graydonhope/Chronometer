@@ -1,6 +1,9 @@
 package com.example.graydon.chronometer;
 
-public class Task {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Task implements Parcelable{
     private String name;
     private boolean isComplete;
     private Duration startDuration, endDuration;
@@ -13,6 +16,26 @@ public class Task {
         this.startDuration = startTime;
         this.endDuration = endTime;
     }
+
+    protected Task(Parcel in) {
+        name = in.readString();
+        isComplete = in.readByte() != 0;
+        startDuration = in.readParcelable(Duration.class.getClassLoader());
+        endDuration = in.readParcelable(Duration.class.getClassLoader());
+        reminderTime = in.readInt();
+    }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 
     /**
      *
@@ -86,5 +109,18 @@ public class Task {
         this.name = name;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeByte((byte) (isComplete ? 1 : 0));
+        dest.writeParcelable(startDuration, flags);
+        dest.writeParcelable(endDuration, flags);
+        dest.writeInt(reminderTime);
+    }
 }
 

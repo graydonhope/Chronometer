@@ -11,10 +11,13 @@ public class Event implements Parcelable{
 	private ArrayList<Task> tasks ;
 	private int currentTaskIndex = -1;
 
-    public Event(){
-        this.tasks = new ArrayList<>();
-    }
+	public Event(){
+		this.tasks = new ArrayList<>();
+	}
+
 	protected Event(Parcel in) {
+		tasks = in.createTypedArrayList(Task.CREATOR);
+		currentTaskIndex = in.readInt();
 	}
 
 	public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -194,15 +197,17 @@ public class Event implements Parcelable{
 		}
 
 
-		@Override
-		public int describeContents () {
-			return 0;
-		}
-
-		@Override
-		public void writeToParcel (Parcel dest,int flags){
-		}
+	@Override
+	public int describeContents() {
+		return 0;
 	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeTypedList(tasks);
+		dest.writeInt(currentTaskIndex);
+	}
+}
 
 
 

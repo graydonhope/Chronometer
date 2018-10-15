@@ -1,8 +1,11 @@
 package com.example.graydon.chronometer;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.TimerTask;
 
-public class Duration {
+public class Duration implements Parcelable{
     private long seconds;
     private int minute;
     private int hourOfDay;
@@ -14,6 +17,24 @@ public class Duration {
         this.minute = minute;
         this.hourOfDay = hourOfDay;
     }
+
+    protected Duration(Parcel in) {
+        seconds = in.readLong();
+        minute = in.readInt();
+        hourOfDay = in.readInt();
+    }
+
+    public static final Creator<Duration> CREATOR = new Creator<Duration>() {
+        @Override
+        public Duration createFromParcel(Parcel in) {
+            return new Duration(in);
+        }
+
+        @Override
+        public Duration[] newArray(int size) {
+            return new Duration[size];
+        }
+    };
 
     public long getSeconds(){
         return seconds;
@@ -52,5 +73,16 @@ public class Duration {
         return (this.seconds + this.minute + this.hourOfDay);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(seconds);
+        dest.writeInt(minute);
+        dest.writeInt(hourOfDay);
+    }
 }
 

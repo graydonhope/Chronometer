@@ -22,7 +22,7 @@ public class EventInfoProgressActivity extends AppCompatActivity {
     protected Event event;
     private EventInProgressModel model;
     private CountDownTimer timer;
-    private static final String EXTRA = "Extra";
+    private static final String EVENT = "Event";
     private static final String TASK = "Current Task: ";
     private static final int CHRONO_PURPLE = Color.parseColor("#843EAF");
     private static final int CHRONO_GREEN = Color.parseColor("#3ba039");
@@ -41,12 +41,13 @@ public class EventInfoProgressActivity extends AppCompatActivity {
         String dayOfMonth = Integer.toString(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         getSupportActionBar().setTitle(dayOfWeek + " " + monthOfYear + " " + dayOfMonth);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(CHRONO_PURPLE));
+        Intent intent = new Intent(EventInfoProgressActivity.this,NewTaskActivity.class);
+        Intent infoToInProgressIntent = getIntent();
+        event = infoToInProgressIntent.getParcelableExtra(EVENT);
+        if(event == null)
+            moveToNewActivity();
 
-        //Intent infoToInProgressIntent = getIntent();
-        //event = infoToInProgressIntent.getParcelableExtra(EXTRA);
-
-
-        event = createEvent(); //infoToInProgressIntent.getParcelableExtra(EXTRA);
+//        event = createEvent(); //infoToInProgressIntent.getParcelableExtra(EXTRA);
         model = new EventInProgressModel(event);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         updateUI();
@@ -92,9 +93,9 @@ public class EventInfoProgressActivity extends AppCompatActivity {
             }
             @Override
             public void onFinish() {
-                //Move onto next task //CREATE NEW TIMER METHOD
+                //Move onto next task
                 if (!(model.getEvent().hasNext())){
-//                    moveToEventInfoActivity();
+                    moveToNewActivity();
                 }
                 else{
                     model.nextTask(false);
@@ -109,6 +110,12 @@ public class EventInfoProgressActivity extends AppCompatActivity {
         if (timer != null)
             timer.cancel();
         Intent toEventInfoActivity = new Intent(EventInfoProgressActivity.this, EventInfoActivity.class);
+        startActivity(toEventInfoActivity);
+    }
+    public void moveToNewActivity(){
+        if (timer != null)
+            timer.cancel();
+        Intent toEventInfoActivity = new Intent(EventInfoProgressActivity.this, NewTaskActivity.class);
         startActivity(toEventInfoActivity);
     }
     public void updateUI(){

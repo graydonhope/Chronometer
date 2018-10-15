@@ -47,6 +47,7 @@ public class NewTaskModel {
     }
 
     public boolean checkTimeFrame(){
+
         boolean validTime = true;
         Log.d("AAAAAAAAAAAAA", "checkTimeFrame: IsTaslkist empty??: " + allTasksList.isEmpty());
         taskListSize = allTasksList.size();
@@ -94,6 +95,9 @@ public class NewTaskModel {
     }
 
     public void saveTask(Context context, Task task){
-        storedTaskManager.addTask(context, task);
+        /***
+         * I COMMENTED THIS OUT -Santos
+         */
+        //storedTaskManager.addTask(context, task);
     }
 }

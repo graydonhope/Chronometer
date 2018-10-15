@@ -36,6 +36,8 @@ public class NewTaskActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        StoredTaskManager.removeAllTasks(getApplicationContext());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newtask);
         startDateDisplay = (TextView) findViewById(R.id.startDate_textView);
@@ -187,6 +189,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 event.addTask(newTask);
                 Intent intent = new Intent(this, EventInfoProgressActivity.class);
                 intent.putExtra("Event", event);
+                startActivity(intent);
             }
         }
         else{

@@ -20,7 +20,7 @@ public class EndDayDialog extends AppCompatDialogFragment {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent sendToEventInfo = new Intent(getContext(), EventInfoActivity.class);
+                Intent sendToEventInfo = new Intent(getContext(), NewTaskActivity.class);
                 startActivity(sendToEventInfo);
             }
         });
