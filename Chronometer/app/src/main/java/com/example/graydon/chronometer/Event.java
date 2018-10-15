@@ -4,6 +4,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Event implements Parcelable{
 	private ArrayList<Task> tasks;
@@ -52,10 +53,12 @@ public class Event implements Parcelable{
 		
 		int tempIndex=tasks.indexOf (task);
 		
-		if (tempIndex==-1){ throw new NoSuchElementException (); }
+		if (tempIndex==-1){ throw new NoSuchElementException(); }
 
 		tasks.add (index, removeTask(tempIndex));
 	}
+
+	/*
 	public void editTaskName (int location, String name){
 		if (name==null){  throw new NullPointerException ();}
 		
@@ -69,6 +72,8 @@ public class Event implements Parcelable{
 		tmp.setName (name);
 
 	}
+
+	*/
 
 	/*
 	public void editTaskHours (int location, int hours ){

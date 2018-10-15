@@ -24,7 +24,7 @@ public class NewTaskActivity extends AppCompatActivity {
     //Activity - where the UI gets updated!! No logic in here
     private TextView startDateDisplay;
     private TextView endDateDisplay;
-    private String name;
+    private String taskName;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerStart;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerEnd;
     private int startTimeHour = -1, endTimeHour = -1, startTimeMinute = -1, endTimeMinute = -1, reminderTime = -1;
@@ -146,7 +146,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     public void isValidNameEntered(){
         EditText taskNameEditText= (EditText) findViewById(R.id.taskNameEditText);
-        String taskName = taskNameEditText.getText().toString();
+        taskName = taskNameEditText.getText().toString();
         if(!taskName.equals("")){
             validNameEntered = true;
         }
@@ -156,7 +156,7 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
     public void isValidReminder(){
-        EditText reminder_number = (EditText) findViewById(R.id.reminderNumber_Number);
+        TextView reminder_number = (TextView) findViewById(R.id.reminderTime_textView);
         Integer reminder_amount = Integer.parseInt(reminder_number.getText().toString());
         reminderTime = (int) reminder_amount;
         if(!(reminderTime == -1)){
@@ -169,15 +169,20 @@ public class NewTaskActivity extends AppCompatActivity {
 
     public void addButtonClicked(View view){
         //create new task - need name, hours, minutes, reminder
-
-        isValidNameEntered();
-        isValidTimeframe();
-        isValidReminder();
+        isValidNameEntered(); isValidReminder(); isValidTimeframe();
+        Log.d("!!!!After methods ", "addButtonClicked: ValidName:" + validNameEntered + " ValidReminder: " + validRemindertime + " valid TimeFrame: " + validTimeframe);
         if(validNameEntered && validTimeframe && validRemindertime){
             Duration startTime = new Duration(this.startTimeHour, this.startTimeMinute);
             Duration endTime = new Duration(this.endTimeHour, this.endTimeMinute);
-            Task newTask = new Task(name, startTime, endTime, reminderTime);
-            Log.d("!!!!!!!!!!!!!!", "addButtonClicked: TASK ADDED");
+            taskModel = new NewTaskModel(this, startTime, endTime, taskName);
+
+            if(!(taskModel.checkNameUnique()) && taskModel.checkTimeFrame()){
+                Log.d("!!!!!XXX", "addButtonClicked: Inside seoncd if");
+                Task newTask = new Task(taskName, startTime, endTime, reminderTime);
+                taskModel.saveTask(this, newTask);
+                Log.d("!!!!!!!!!!!", "addButtonClicked: NEW Task ADDED and Saved!!");
+
+            }
         }
     }
 }
