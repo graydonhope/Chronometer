@@ -46,24 +46,36 @@ public class EventInfoProgressActivity extends AppCompatActivity {
         event = infoToInProgressIntent.getParcelableExtra(EVENT);
         if(event == null)
             moveToNewActivity();
-
-//        event = createEvent(); //infoToInProgressIntent.getParcelableExtra(EXTRA);
         model = new EventInProgressModel(event);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         updateUI();
         createNextTaskTimer();
     }
+
+    /**
+     * Method called when the cancel button is clicked
+     * @param view the cancel button clicked
+     */
     public void onCancelButtonClick(View view){
         EndDayDialog endDayDialog = new EndDayDialog();
         endDayDialog.show(getSupportFragmentManager(), "End Day Dialog");
         alarmManager.cancel(alarmEndPendingIntent);
         alarmManager.cancel(alarmReminderPendingIntent);
     }
+
+    /**
+     * Method called wehn the completed is called, indicating that task has been finished
+     * @param view the completed button
+     */
     public void onCompletedButtonClick(View view){
         Button completedButton = findViewById(R.id.completedButton);
         completedButton.setBackgroundColor(CHRONO_GREEN);
     }
 
+
+    /**
+     * Creates a new task time using the current task being completed (in model)
+     */
     public void createNextTaskTimer(){
         if (timer != null){
             timer.cancel();
@@ -72,6 +84,7 @@ public class EventInfoProgressActivity extends AppCompatActivity {
         timer = new CountDownTimer(model.getCurrentTimeLeft(),1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                //Converting milliseconds to hours.minutes,seconds
                 String hours   = Integer.toString(((int) ((millisUntilFinished / (1000*60*60)) % 24)));
                 String minutes = Integer.toString(((int) ((millisUntilFinished / (1000*60)) % 60)));
                 String seconds = Integer.toString((int) (millisUntilFinished / 1000) % 60 );
@@ -106,23 +119,38 @@ public class EventInfoProgressActivity extends AppCompatActivity {
         }.start();
     }
 
+    /**
+     * Changes activity to the event info activity
+     */
     public void moveToEventInfoActivity(){
         if (timer != null)
             timer.cancel();
         Intent toEventInfoActivity = new Intent(EventInfoProgressActivity.this, EventInfoActivity.class);
         startActivity(toEventInfoActivity);
     }
+
+    /**
+     * Changes activity to new activity
+     */
     public void moveToNewActivity(){
         if (timer != null)
             timer.cancel();
         Intent toEventInfoActivity = new Intent(EventInfoProgressActivity.this, NewTaskActivity.class);
         startActivity(toEventInfoActivity);
     }
+
+    /**
+     * Updates the UI with the current task info
+     */
     public void updateUI(){
         Button completedButton = findViewById(R.id.completedButton);
         completedButton.setBackgroundColor(CHRONO_PURPLE);
         taskNameTextView.setText(TASK + model.getCurrentTask().getName());
     }
+
+    /**
+     * Creates alarm for remidner and end time of task
+     */
     public void setUpEndAndReminderAlarm(){
         Intent alarmIntent = new Intent(EventInfoProgressActivity.this, AlarmReceiver.class);
         alarmEndPendingIntent = PendingIntent.getBroadcast(EventInfoProgressActivity.this,0,alarmIntent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -131,7 +159,11 @@ public class EventInfoProgressActivity extends AppCompatActivity {
         alarmManager.set(AlarmManager.RTC_WAKEUP,model.getCurrentTaskEndTime().getTimeInMillis() - model.getCurrentTaskReminderTimeInMili(),alarmReminderPendingIntent);
     }
 
-    //Simulates event
+    /**
+     *  Simualtes the event that will be passed to this activity from event info activity
+     * @return event made
+     */
+
     public Event createEvent(){
 
         Duration dur1 = new Duration(0,0);
