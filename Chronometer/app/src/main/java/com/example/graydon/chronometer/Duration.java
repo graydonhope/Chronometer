@@ -1,28 +1,51 @@
-//package com.example.graydon.chronometer;
+package com.example.graydon.chronometer;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.TimerTask;
 
-public class Duration {
+public class Duration implements Parcelable{
     private long seconds;
-    private long minutes;
-    private long hours;
+    private int minute;
+    private int hourOfDay;
 
-    public Duration(int hours, int minutes, int seconds){
-        this.seconds = seconds * 1000;
-        this.minutes = minutes * 60000;
-        this.hours = hours * 3600000;
+    public Duration(int hourOfDay, int minute){
+        if(hourOfDay < 0 || hourOfDay > 23 || minute > 59 || minute < 0){
+            throw new IllegalArgumentException("Hours must be in 0-23 range, Minutes must be in 0-59 range");
+        }
+        this.minute = minute;
+        this.hourOfDay = hourOfDay;
     }
+
+    protected Duration(Parcel in) {
+        seconds = in.readLong();
+        minute = in.readInt();
+        hourOfDay = in.readInt();
+    }
+
+    public static final Creator<Duration> CREATOR = new Creator<Duration>() {
+        @Override
+        public Duration createFromParcel(Parcel in) {
+            return new Duration(in);
+        }
+
+        @Override
+        public Duration[] newArray(int size) {
+            return new Duration[size];
+        }
+    };
 
     public long getSeconds(){
         return seconds;
     }
 
-    public long getMinutes(){
-        return minutes;
+    public int getMinute(){
+        return minute;
     }
 
-    public long getHours(){
-        return hours;
+    public int getHour(){
+        return hourOfDay;
     }
 
     public void setSeconds(int seconds){
@@ -32,23 +55,34 @@ public class Duration {
         this.seconds = seconds * 1000;
     }
 
-    public void setMinutes(int minutes){
+    public void setMinute(int minutes){
         if(minutes <= 0){
             throw new IllegalArgumentException("Cannot enter a value less than or equal to 0");
         }
-        this.minutes = minutes * 60000;
+        this.minute = minute * 60000;
     }
 
-    public void setHours(int hours){
+    public void setHour(int hours){
         if(hours <= 0){
             throw new IllegalArgumentException("Cannot enter a value less than or equal to 0");
         }
-        this.hours = hours * 3600000;
+        this.hourOfDay = hours * 3600000;
     }
 
     public long getTotalTime(){
-        return (this.seconds + this.minutes + this.hours);
+        return (this.seconds + this.minute + this.hourOfDay);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(seconds);
+        dest.writeInt(minute);
+        dest.writeInt(hourOfDay);
+    }
 }
 

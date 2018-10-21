@@ -1,117 +1,156 @@
 package com.example.graydon.chronometer;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class Event {
-	private ArrayList<Task> tasks;
-	private String eventName;
-	private Iterator <Task> iter;
-	public Event (String eventName){
-		this.eventName=eventName;
-		tasks=new ArrayList<Task> ();
-		iter=tasks.iterator ();
+public class Event implements Parcelable{
+	private ArrayList<Task> tasks ;
+	private int currentTaskIndex = -1;
+
+	public Event(){
+		this.tasks = new ArrayList<>();
 	}
+
+	protected Event(Parcel in) {
+		tasks = in.createTypedArrayList(Task.CREATOR);
+		currentTaskIndex = in.readInt();
+	}
+
+	public static final Creator<Event> CREATOR = new Creator<Event>() {
+		@Override
+		public Event createFromParcel(Parcel in) {
+			return new Event(in);
+		}
+
+		@Override
+		public Event[] newArray(int size) {
+			return new Event[size];
+		}
+	};
+
+	/**
+	 * Adds a task to the end of an event
+	 * @param task the task to be added
+	 */
 	public void addTask (Task task){
-		tasks.add (task);
+		if (task == null)
+			throw new IllegalArgumentException("Task cannot be null");
+		tasks.add(task);
+    }
+
+	/**
+	 * Adds a task at the given index
+	 * @param index the index to add the task to
+	 * @param task the task to be added
+	 */
+
+	public void addTask(int index, Task task){
+		if (index < 0 || index >= tasks.size())
+			throw new IndexOutOfBoundsException("Location value out of range");
+		if(task == null)
+			throw new IllegalArgumentException("Cannot add null task");
+		tasks.add(index,task);
 	}
-	//removes object at specified index
+
+	/**
+	 * Removes and returns a task at a given index
+	 * @param index the index of the task to remove
+	 * @return the removed task
+	 */
 	public Task removeTask (int index){
-		return tasks.remove (index);
+		if(index < 0 || index >= tasks.size())
+			throw new IndexOutOfBoundsException("index out of range of tasks");
+		return tasks.remove(index);
 	}
-	//removes the first occurence of the specified task. if false returned object was not found
+
+	/**
+	 * Removes the given task from the event
+	 * @param task the task to be removed
+	 * @return true if the item existed and was removed, otherwise false
+	 */
 	public boolean removeTask (Task task){
-		return tasks.remove (task);
+		if(task == null)
+			throw new IllegalArgumentException("task cannot be null");
+		return tasks.remove(task);
 	}
-	//throws IndecOutOfBounds if tasks does not have a next
-	//throws IllegalStateException if tasks list is empty
+
+	/**
+	 * Get a task at a specific index
+	 * @param index the index of the task to be retrieved
+	 * @return the task at the given location
+	 */
 	public Task getTask (int index){
-		return tasks.get (index);
+		if (index < 0 || index >= tasks.size())
+			throw new IndexOutOfBoundsException("No task at that location");
+		return tasks.get(index);
 	}
-	public void manageTask (int index, Task task){
-		if (!(index > -1 && index < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
-		
-		int tempIndex=tasks.indexOf (task);
-		
-		if (tempIndex==-1){ throw new IllegalArgumentException (); }
 
-		tasks.add (index, removeTask(tempIndex));
-	}
-	public void editTaskName (int location, String name){
-		if (name==null){  throw new NullPointerException ();}
-		
-		if (tasks.isEmpty ()){  throw new IllegalStateException();}
-		
-		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
-		
-		int index=-1;
-		Task temp=null;
-		while (index <location+1){
-			temp=iter.next ();
-			index ++;
+	/**
+	 * Checks if the event has another task to be completed
+	 * @return true if there is another task to be completed
+	 */
+    public boolean hasNext(){
+	    return (currentTaskIndex + 1) < tasks.size();
+    }
+
+	/**
+	 * Moves to next task and returns the new task
+	 * @param currentTaskIsComplete sets the current task to complete/not comeplete before moving to next text
+	 * @return the next task to be compeleted
+	 */
+	public Task nextTask (boolean currentTaskIsComplete) {
+		currentTaskIndex++;
+		if(currentTaskIndex >= tasks.size()){
+			throw new IndexOutOfBoundsException("No more tasks.");
 		}
-		iter=tasks.iterator ();
-		temp.setName (name);
+		return tasks.get(currentTaskIndex);
 	}
-	public void editTaskHours (int location, int hours ){
-		
-		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
-		
-		Task tempTask = getTask (location);
-		tempTask.setHours (hours);
+
+	/**
+	 * @return the currentTaskIndex
+	 */
+	public int getCurrentTaskIndex(){
+		return currentTaskIndex;
 	}
-	public void editTaskMinutes (int location, int minutes ){
-		
-		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
-		
-		Task tempTask = getTask (location);
-		tempTask.setMinutes (minutes);
-	} 
-	public void editTaskIsComplete (int location, boolean isComplete){
 
-		if (!(location > -1 && location < tasks.size ()+1)){  throw new IndexOutOfBoundsException ();}
-
-		Task tempTask = getTask (location);
-		tempTask.setIsComplete (isComplete);
-
+	/**
+	 * Returns the number of of tasks in the event
+	 * @return number of tasks in the event
+	 */
+	public int numberOfTasks () {
+		return tasks.size();
 	}
-	public long totalMinutes(){
-		long temp=0;
-		while (iter.hasNext ()){
-			temp=temp+iter.next ().getMinutes_inMilli ();
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeTypedList(tasks);
+		dest.writeInt(currentTaskIndex);
+	}
+
+	/**
+	 * A string representation of an event
+	 * @return the string representation of an event
+	 */
+	public String toString(){
+		StringBuilder stringEvent = new StringBuilder("[");
+		for(int i = 0; i < tasks.size()-1; i++){
+			stringEvent.append(tasks.get(i).getName() + ",");
 		}
-		iter=tasks.iterator ();
-		return temp;
-
-	} 
-	public long totalHours (){
-		long temp=0;
-		while (iter.hasNext ()){
-			temp=temp+iter.next ().getHours_inMilli ();
-		}
-		iter=tasks.iterator ();
-		return temp;	
+		stringEvent.append(tasks.get(tasks.size()-1).getName() + "]");
+		stringEvent.append(" Size: " + tasks.size());
+		return stringEvent.toString();
 	}
-
-
-	public Task nextTask (boolean currentTaskIsComplete){
-		if (currentTaskIsComplete==false){
-			throw new IllegalArgumentException ("Task is Incomplete");
-		}
-		if (!(iter.hasNext ())){
-			throw new IndexOutOfBoundsException ();
-		}
-		return iter.next ();		
-
-	}
-	public String getName (){
-		return eventName;
-	}
-	public int numberOfTasks (){
-		return tasks.size ();
-	}
-
-
 }
+
 
 
 
