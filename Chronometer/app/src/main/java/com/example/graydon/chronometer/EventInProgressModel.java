@@ -1,15 +1,24 @@
 package com.example.graydon.chronometer;
 
+import android.content.Context;
+
 import java.util.Calendar;
 
 public class EventInProgressModel {
     private Event event;
     private Task currentTask;
-    public EventInProgressModel(Event event){
+    public EventInProgressModel(Context appContext, Event event){
         if (event == null)
             throw new IllegalArgumentException("Event cannot be null");
         this.event = event;
-        this.currentTask = event.nextTask(false);
+        if(event.getCurrentTaskIndex() == -1){
+            this.currentTask = event.nextTask(false);
+        }
+        else{
+            this.currentTask = event.getTask(event.getCurrentTaskIndex());
+        }
+        StoredTaskManager.saveCurrentEvent(appContext,this.event);
+        StoredTaskManager.setEventInProgress(appContext,true);
     }
     public Task nextTask(boolean isComplete){
         return currentTask = event.nextTask(isComplete);
@@ -46,6 +55,14 @@ public class EventInProgressModel {
     }
     public long getCurrentTaskReminderTimeInMili(){
         return currentTask.getReminderTimeMinutes() * 60000;
+    }
+    public void setCurrentTaskIsComplete(boolean isComplete){
+        getCurrentTask().setIsComplete(isComplete);
+    }
+
+    public void saveCurrentEvent(){
+
+
     }
 
 

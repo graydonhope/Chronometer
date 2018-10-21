@@ -51,7 +51,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
+        android:background="@drawable/clear_rounded_edge_button"
         android:text="Completed"
         android:onClick="onCompletedButtonClick"
         android:textColor="@android:color/white"
@@ -68,7 +68,7 @@
         android:layout_marginBottom="15dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:background="#843EAF"
+        android:background="@drawable/clear_rounded_edge_button"
         android:onClick="onCancelButtonClick"
         android:text="End Task"
         android:textColor="@android:color/white"
@@ -76,4 +76,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/circularProgressBar"
+        android:layout_width="wrap_content"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:progress="100"
+        android:layout_height="wrap_content" />
 </android.support.constraint.ConstraintLayout>

@@ -111,6 +111,13 @@ public class Event implements Parcelable{
 	}
 
 	/**
+	 * @return the currentTaskIndex
+	 */
+	public int getCurrentTaskIndex(){
+		return currentTaskIndex;
+	}
+
+	/**
 	 * Returns the number of of tasks in the event
 	 * @return number of tasks in the event
 	 */
