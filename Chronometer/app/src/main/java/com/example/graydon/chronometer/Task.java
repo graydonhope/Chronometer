@@ -16,6 +16,9 @@ public class Task implements Parcelable{
         this.startDuration = startTime;
         this.endDuration = endTime;
     }
+    public String toString (){
+        return name;
+    }
 
     protected Task(Parcel in) {
         name = in.readString();
