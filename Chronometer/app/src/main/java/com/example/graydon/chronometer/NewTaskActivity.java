@@ -187,13 +187,21 @@ public class NewTaskActivity extends AppCompatActivity {
                 Log.d("!!!!!!!!!!!", "addButtonClicked: NEW Task ADDED and Saved!!");
                 Event event = new Event();
                 event.addTask(newTask);
-                Intent intent = new Intent(this, EventInfoProgressActivity.class);
-                intent.putExtra("Event", event);
-                startActivity(intent);
+//                Intent intent = new Intent(this, EventInfoProgressActivity.class);
+//                intent.putExtra("Event", event);
+//                startActivity(intent);
+                Intent intent = new Intent();
+                intent.putExtra("Task", newTask);
+                setResult(RESULT_OK,intent);
+                finish ();
             }
         }
         else{
             Toast.makeText(this, "Unable to add Task ", Toast.LENGTH_LONG).show();
         }
+    }
+    public void cancelButton (View view){
+        Intent intent = new Intent(this, EventInfoActivity.class);
+        startActivity(intent);
     }
 }
