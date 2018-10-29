@@ -60,10 +60,11 @@ public class EventInProgressModel {
         getCurrentTask().setIsComplete(isComplete);
     }
 
-    public void saveCurrentEvent(){
 
-
+    public long getTotalTaskLength(){
+        return getCurrentTaskEndTime().getTimeInMillis() - getCurrentTaskStartTime().getTimeInMillis();
     }
+
 
 
 

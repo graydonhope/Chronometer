@@ -1,15 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item>
-    <shape android:shape="oval">
-        <stroke
-            android:width="10dp"
-            android:color="#ffffff"
-            />
-        <size
-            android:width="225dp"
-            android:height="225dp"
-            />
-    </shape>
-</item>
-</selector>
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@android:id/progress">
+        <shape
+            android:innerRadiusRatio="2.3"
+            android:shape="ring"
+            android:thicknessRatio="20" >
+        <solid
+        android:color="#843EAF"/>
+
+        </shape>
+    </item>
+    <item android:id="@android:id/secondaryProgress">
+        <shape
+            android:innerRadiusRatio="2.3"
+            android:shape="ring"
+            android:thicknessRatio="20" >
+        <solid
+            android:color="#3ba039"/>
+        </shape>
+    </item>
+</layer-list>
+
