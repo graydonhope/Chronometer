@@ -4,9 +4,12 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -18,9 +21,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Timer;
 
 public class EventInfoProgressActivity extends AppCompatActivity implements EndOfEventListener {
     protected TextView timeLeftTextView;
@@ -72,6 +77,19 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
     }
 
     /**
+     * Changes the circular progress bar's secondary progress colour
+     * @param color the colour to use
+     */
+
+    private void setSecondaryProgressBarColour(int color){
+        if(circularProgressBar.getProgressDrawable() instanceof LayerDrawable){
+            LayerDrawable progressDrawable = (LayerDrawable) circularProgressBar.getProgressDrawable();
+            if(progressDrawable.getDrawable(1) instanceof  GradientDrawable){
+                ((GradientDrawable) progressDrawable.getDrawable(1)).setColor(color);
+            }
+        }
+    }
+    /**
      * Method called when the cancel button is clicked
      * @param view the cancel button clicked
      */
@@ -90,7 +108,7 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
         model.setCurrentTaskIsComplete(true);
         StoredTaskManager.saveCurrentEvent(getApplicationContext(),model.getEvent());
         completedButton.setBackground(getResources().getDrawable(R.drawable.green_rounded_edge_button));
-
+        Toast.makeText(this, "Marked as completed.", Toast.LENGTH_LONG).show();
     }
 
 
@@ -101,16 +119,27 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
         if (timer != null){
             timer.cancel();
         }
+        circularProgressBar.setMax((int) model.getTotalTaskLength());
+        circularProgressBar.setProgress(circularProgressBar.getMax());
         setUpEndAndReminderAlarm();
-        timer = new CountDownTimer(model.getCurrentTimeLeft(),1000) {
+        timer = new CountDownTimer(model.getCurrentTimeLeft(),100) {
             @Override
             public void onTick(long millisUntilFinished) {
                 //Converting milliseconds to hours.minutes,seconds
                 String hours   = Integer.toString(((int) ((millisUntilFinished / (1000*60*60)) % 24)));
                 String minutes = Integer.toString(((int) ((millisUntilFinished / (1000*60)) % 60)));
                 String seconds = Integer.toString((int) (millisUntilFinished / 1000) % 60 );
-                int progress =  (int)((millisUntilFinished/1000));
-                circularProgressBar.setProgress(0);
+                circularProgressBar.setSecondaryProgress( (int) millisUntilFinished);
+                float percentComplete = ( (float) millisUntilFinished/circularProgressBar.getMax())*100;
+                Log.d(TAG,Float.toString(percentComplete) +"/" + Integer.toString(circularProgressBar.getMax()));
+                if (percentComplete <= 20 ){
+                    setSecondaryProgressBarColour(Color.RED);
+
+                }
+                else if (percentComplete <= 50){
+                    setSecondaryProgressBarColour(Color.YELLOW);
+                }
+
                 if (Integer.parseInt(hours) < 10)
                     hours = "0" + hours;
                 if (Integer.parseInt(minutes) < 10)
@@ -130,6 +159,7 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
             @Override
             public void onFinish() {
                 //Move onto next task
+                circularProgressBar.setSecondaryProgress(0);
                 if (!(model.getEvent().hasNext())){
                     timeLeftTextView.setText("00");
                     if(!getSupportFragmentManager().isStateSaved() && !eventOverDialog.isAdded())
@@ -185,10 +215,13 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
      */
     public void setUpEndAndReminderAlarm(){
         Intent alarmIntent = new Intent(EventInfoProgressActivity.this, AlarmReceiver.class);
+        alarmIntent.putExtra("reminderTime", Integer.toString(model.getCurrentTask().getReminderTimeMinutes()));
+        alarmIntent.putExtra("isEndAlarm", true);
         alarmEndPendingIntent = PendingIntent.getBroadcast(EventInfoProgressActivity.this,0,alarmIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmIntent.putExtra("isEndAlarm", false);
         alarmReminderPendingIntent = PendingIntent.getBroadcast(EventInfoProgressActivity.this,1,alarmIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,model.getCurrentTaskEndTime().getTimeInMillis(),alarmEndPendingIntent);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,model.getCurrentTaskEndTime().getTimeInMillis() - model.getCurrentTaskReminderTimeInMili(),alarmReminderPendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,model.getCurrentTaskEndTime().getTimeInMillis(),alarmEndPendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,model.getCurrentTaskEndTime().getTimeInMillis() - model.getCurrentTaskReminderTimeInMili(),alarmReminderPendingIntent);
     }
 
     /**
@@ -245,7 +278,8 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
         if(timer != null)
             timer.cancel();
         alarmManager.cancel(alarmEndPendingIntent);
-        alarmManager.cancel(alarmReminderPendingIntent);
+        //alarmManager.cancel(alarmReminderPendingIntent);
+
         StoredTaskManager.setEventInProgress(getApplicationContext(),false);
         moveToNewActivity();
     }
