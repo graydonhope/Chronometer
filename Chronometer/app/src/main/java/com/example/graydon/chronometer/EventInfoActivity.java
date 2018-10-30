@@ -1,6 +1,7 @@
 package com.example.graydon.chronometer;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,10 @@ public class EventInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //ADDED BY SANTOS - If there is an event in progress, it will take the user to the event in progress screen right away
+        if (StoredTaskManager.eventIsInProgress(getApplicationContext()))
+            moveToEventInProgressActivity();
+
         setContentView(R.layout.activity_event_info);
         taskView=findViewById(R.id.taskview);
         listview=findViewById(R.id.eventList);
@@ -76,6 +81,11 @@ public class EventInfoActivity extends AppCompatActivity {
             eventName.setText (task.getName());
             return convertView;
         }
+    }
+
+    private void moveToEventInProgressActivity() {
+        Intent toInfoEventinProgressActivity = new Intent(this,EventInfoProgressActivity.class);
+        startActivity(toInfoEventinProgressActivity);
     }
 
 }
