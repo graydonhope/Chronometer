@@ -31,6 +31,9 @@ public class Event implements Parcelable{
 			return new Event[size];
 		}
 	};
+	public boolean isEmpty (){
+		return tasks.isEmpty();
+	}
 
 	/**
 	 * Adds a task to the end of an event
@@ -88,6 +91,9 @@ public class Event implements Parcelable{
 			throw new IndexOutOfBoundsException("No task at that location");
 		return tasks.get(index);
 	}
+	public ArrayList <Task> getTasks(){
+		return tasks;
+	}
 
 	/**
 	 * Checks if the event has another task to be completed
@@ -108,6 +114,13 @@ public class Event implements Parcelable{
 			throw new IndexOutOfBoundsException("No more tasks.");
 		}
 		return tasks.get(currentTaskIndex);
+	}
+
+	/**
+	 * @return the currentTaskIndex
+	 */
+	public int getCurrentTaskIndex(){
+		return currentTaskIndex;
 	}
 
 	/**

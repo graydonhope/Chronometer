@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/circle"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:text="00:00:00"
         android:textAlignment="center"
@@ -40,8 +40,10 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/timeLeftTextView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.194" />
 
     <Button
         android:id="@+id/completedButton"
@@ -51,15 +53,16 @@
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:text="Completed"
+        android:background="@drawable/clear_rounded_edge_button"
         android:onClick="onCompletedButtonClick"
+        android:text="Completed"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/endTaskButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeLeftTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/timeLeftTextView"
+        app:layout_constraintVertical_bias="0.748" />
 
     <Button
         android:id="@+id/endTaskButton"
@@ -68,7 +71,7 @@
         android:layout_marginBottom="15dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:background="#843EAF"
+        android:background="@drawable/clear_rounded_edge_button"
         android:onClick="onCancelButtonClick"
         android:text="End Task"
         android:textColor="@android:color/white"
@@ -76,4 +79,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/circularProgressBar"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="230dp"
+        android:layout_height="230dp"
+        android:progress="100"
+        android:secondaryProgress="100"
+        android:progressDrawable="@drawable/circle"
+        android:rotation="-90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/endTaskButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
