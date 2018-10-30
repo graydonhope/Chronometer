@@ -69,7 +69,7 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
         }
 
         if(event == null)
-            moveToNewActivity();
+            moveToEventInfoActivity();
         model = new EventInProgressModel(getApplicationContext(),event);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         updateUI();
@@ -281,7 +281,7 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
         //alarmManager.cancel(alarmReminderPendingIntent);
 
         StoredTaskManager.setEventInProgress(getApplicationContext(),false);
-        moveToNewActivity();
+        moveToEventInfoActivity();
     }
 
 
