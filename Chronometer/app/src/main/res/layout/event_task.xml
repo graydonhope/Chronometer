@@ -8,11 +8,10 @@
         android:id="@+id/taskName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#2D2B2B"
-        android:fontFamily="@font/alegreya_sans_sc_extrabold"
+        android:background="#3B3B3B"
         android:text="Event"
-        android:textColor="#D3D3D3"
+        android:textColor="#FFFFFF"
         android:textSize="38dp"
-        android:textStyle="bold" />
+        />
 
 </LinearLayout>

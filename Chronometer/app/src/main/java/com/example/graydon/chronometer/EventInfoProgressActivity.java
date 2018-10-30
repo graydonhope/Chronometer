@@ -35,7 +35,7 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
     private CountDownTimer timer;
     private static final String EVENT = "Event";
     private static final String TASK = "Current Task: ";
-    private static final int CHRONO_PURPLE = Color.parseColor("#843EAF");
+    private static final int CHRONO_PURPLE = Color.parseColor("#1F1F1F");
     private static final int CHRONO_GREEN = Color.parseColor("#3ba039");
     private AlarmManager alarmManager;
     private PendingIntent alarmEndPendingIntent;

@@ -4,6 +4,6 @@
     <solid android:color="#FFFF"/>
     <corners android:radius="100dp"/>
     <gradient android:angle="0" android:startColor="#FFFFFF  "
-        android:endColor="#D3D3D3"/>
+        android:endColor="#FFFFFF"/>
 
 </shape>
