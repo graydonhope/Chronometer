@@ -73,7 +73,7 @@
         android:layout_marginBottom="15dp"
         android:background="@drawable/clear_rounded_edge_button"
         android:onClick="onCancelButtonClick"
-        android:text="End Task"
+        android:text="End Day"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
