@@ -61,6 +61,11 @@ public class EventInfoActivity extends AppCompatActivity {
             taskView.setVisibility(View.GONE);
             populateListView();
         }
+        else if (requestCode==0&&resultCode==RESULT_CANCELED){
+            taskView = findViewById(R.id.taskview);
+            taskView.setVisibility(View.GONE);
+            populateListView();
+        }
     }
     private void populateListView (){
         ArrayList <Task> tasks = event.getTasks();

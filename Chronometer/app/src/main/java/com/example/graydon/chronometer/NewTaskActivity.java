@@ -263,6 +263,8 @@ public class NewTaskActivity extends AppCompatActivity {
     }
     public void cancelButton (View view){
         Intent intent = new Intent(this, EventInfoActivity.class);
-        startActivity(intent);
+        setResult (RESULT_CANCELED,intent);
+
+        finish();
     }
 }
