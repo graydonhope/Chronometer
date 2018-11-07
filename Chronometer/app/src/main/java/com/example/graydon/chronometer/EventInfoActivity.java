@@ -83,7 +83,7 @@ public class EventInfoActivity extends AppCompatActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_task, parent, false);
             }
             TextView eventName= convertView.findViewById(R.id.taskName);
-            eventName.setText (task.getName());
+            eventName.setText(task.getName());
             return convertView;
         }
     }

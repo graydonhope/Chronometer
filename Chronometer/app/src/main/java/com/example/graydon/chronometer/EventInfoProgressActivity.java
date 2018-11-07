@@ -43,6 +43,7 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
     private static final String TAG = "SGAGB074";
     private boolean eventIsOver = false;
     private  EventOverDialog eventOverDialog;
+    private boolean alarmSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
         eventOverDialog = new EventOverDialog();
         if(StoredTaskManager.eventIsInProgress(getApplicationContext())){
             event = StoredTaskManager.getCurrentEvent(getApplicationContext());
+            alarmSet = true;
 //            Intent infoToInProgressIntent = getIntent();
 //            event = infoToInProgressIntent.getParcelableExtra(EVENT);
         }
@@ -121,7 +123,8 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
         }
         circularProgressBar.setMax((int) model.getTotalTaskLength());
         circularProgressBar.setProgress(circularProgressBar.getMax());
-        setUpEndAndReminderAlarm();
+        if(!alarmSet)
+            setUpEndAndReminderAlarm();
         timer = new CountDownTimer(model.getCurrentTimeLeft(),100) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -138,6 +141,9 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
                 }
                 else if (percentComplete <= 50){
                     setSecondaryProgressBarColour(Color.YELLOW);
+                }
+                else{
+                    setSecondaryProgressBarColour(CHRONO_GREEN);
                 }
 
                 if (Integer.parseInt(hours) < 10)
@@ -277,12 +283,23 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
     public void onEndOfEvent() {
         if(timer != null)
             timer.cancel();
-        alarmManager.cancel(alarmEndPendingIntent);
-        //alarmManager.cancel(alarmReminderPendingIntent);
+        if (alarmManager != null){
+            if (alarmEndPendingIntent != null)
+                alarmManager.cancel(alarmEndPendingIntent);
+
+            if (alarmReminderPendingIntent != null)
+                alarmManager.cancel(alarmReminderPendingIntent);
+
+        }
+
 
         StoredTaskManager.setEventInProgress(getApplicationContext(),false);
         moveToEventInfoActivity();
     }
 
+    @Override
+    public void onBackPressed() {
+        //Do nothing if the back button is pressed.
 
+    }
 }

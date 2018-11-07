@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".NewTaskActivity"
     android:background="#3B3B3B"
-    tools:layout_editor_absoluteY="50dp">
+    tools:layout_editor_absoluteY="50dp"
+    >
 
     <TextView
         android:id="@+id/type_textView"
@@ -72,8 +73,6 @@
         android:ems="10"
         android:hint="Please enter task name"
         android:backgroundTint="#FFFFFF"
-
-
         android:inputType="textPersonName"
         android:textColor="@android:color/white"
         android:textColorHint="#FFFFFF"
@@ -210,7 +209,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:focusableInTouchMode="false"
-
         android:hint="1:00 PM"
         android:textColor="@android:color/white"
         android:textColorHint="#FFFFFF"
@@ -232,7 +230,7 @@
         android:layout_marginBottom="8dp"
         android:clickable="false"
         android:inputType="none"
-        android:text="15"
+        android:text="1"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
