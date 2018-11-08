@@ -83,7 +83,9 @@ public class EventInfoActivity extends AppCompatActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_task, parent, false);
             }
             TextView eventName= convertView.findViewById(R.id.taskName);
+            TextView eventTime=convertView.findViewById(R.id.time);
             eventName.setText(task.getName());
+            eventTime.setText (task.getStartHour()%12+":"+task.getStartMinute()+"-"+task.getEndHour()%12+":"+task.getEndMinute());
             return convertView;
         }
     }
