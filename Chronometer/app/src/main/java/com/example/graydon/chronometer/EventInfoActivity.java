@@ -16,12 +16,13 @@ import android.widget.ListAdapter;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.graydon.chronometer.R;
 import java.util.ArrayList;
 
 
 public class EventInfoActivity extends AppCompatActivity {
-   ListView listview;
+   SwipeMenuListView  listview;
    TextView taskView;
    Event event;
     @Override
@@ -33,7 +34,7 @@ public class EventInfoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_event_info);
         taskView=findViewById(R.id.taskview);
-        listview=findViewById(R.id.eventList);
+        listview= findViewById(R.id.eventList);
         event=new Event ();
     }
     public void addButtonClick (View view){
