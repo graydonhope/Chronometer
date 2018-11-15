@@ -265,3 +265,9 @@ public class NewTaskActivity extends AppCompatActivity {
         finish();
     }
 }
+//TODO
+/*Graydon to access the event onject i am sending to your activity via intent use the following code
+* Intent intent=getIntent ()//what this line does is, it gets the intent that was used to switch us to the activity
+* Event event=intent.getParcelableExtra ("event");//here you are making your own Event var and storing the Event from
+*                                                   my activity into your activity which is saved in event.
+*                                                   the "event" is the name of the object i gave to the intent(EventInfoActivity line 55 and 56)*/
