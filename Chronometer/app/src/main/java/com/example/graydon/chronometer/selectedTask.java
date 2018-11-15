@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class selectedTask extends AppCompatActivity {
     private Task task;
     TextView taskName;
@@ -26,8 +29,9 @@ public class selectedTask extends AppCompatActivity {
         Intent intent = getIntent();
         task=intent.getParcelableExtra("selectedTask");
         taskName.setText(task.getName());
-        taskStartDur.setText(task.getStartHour() % 12 + ":" + task.getStartMinute());
-        taskEndDur.setText(task.getEndHour() % 12 + ":" + task.getEndMinute());
+        NumberFormat formatter = new DecimalFormat("00");
+        taskStartDur.setText(formatter.format(task.getStartHour()) + ":" + formatter.format (task.getStartMinute()));
+        taskEndDur.setText(formatter.format (task.getEndHour()) + ":" + formatter.format (task.getEndMinute()));
         position=intent.getIntExtra("position",1);
     }
     public void deleteTask (View view){
