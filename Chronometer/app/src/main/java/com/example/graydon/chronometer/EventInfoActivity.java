@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.content.Intent;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.ListAdapter;
@@ -17,6 +18,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.graydon.chronometer.R;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
@@ -35,6 +39,17 @@ public class EventInfoActivity extends AppCompatActivity {
         taskView=findViewById(R.id.taskview);
         listview=findViewById(R.id.eventList);
         event=new Event ();
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Task selectedTask;
+                selectedTask=event.getTask(position);
+                Intent intent = new Intent (EventInfoActivity.this, selectedTask.class);
+                intent.putExtra ("selectedTask",selectedTask);
+                intent.putExtra("position",position);
+                startActivityForResult(intent,1);
+            }
+        });
     }
     public void addButtonClick (View view){
         Intent intent =new Intent (this,NewTaskActivity.class);
@@ -52,20 +67,39 @@ public class EventInfoActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
-        if (requestCode==0&&resultCode==RESULT_OK){
-            taskView= findViewById(R.id.taskview);
-            Task newTask=data.getParcelableExtra("Task");
-            event.addTask (newTask);
-            taskView.setVisibility(View.GONE);
-            populateListView();
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case (0) :{
+                if (resultCode == RESULT_OK) {
+                    taskView = findViewById(R.id.taskview);
+                    Task newTask = data.getParcelableExtra("Task");
+                    event.addTask(newTask);
+                    taskView.setVisibility(View.GONE);
+                    populateListView();
+                } else if (resultCode == RESULT_CANCELED) {
+                    if (event.isEmpty()){
+                        taskView.setVisibility(View.VISIBLE);
+                    }
+                }
+            }break;
+
+            case (1): {
+                if (resultCode == RESULT_OK) {
+                    int position = data.getIntExtra("pos", 1);
+                    event.removeTask(position);
+                    populateListView();
+                    if (event.isEmpty()) {
+                        taskView.setVisibility(View.VISIBLE);
+                    }
+                } else if (resultCode == RESULT_CANCELED) {
+                }
+            }break;
         }
-        else if (requestCode==0&&resultCode==RESULT_CANCELED){
-            taskView = findViewById(R.id.taskview);
-            taskView.setVisibility(View.GONE);
-            populateListView();
-        }
+
+
     }
     private void populateListView (){
         ArrayList <Task> tasks = event.getTasks();
@@ -85,8 +119,19 @@ public class EventInfoActivity extends AppCompatActivity {
             TextView eventName= convertView.findViewById(R.id.taskName);
             TextView eventTime=convertView.findViewById(R.id.time);
             eventName.setText(task.getName());
-            eventTime.setText (task.getStartHour()%12+":"+task.getStartMinute()+"-"+task.getEndHour()%12+":"+task.getEndMinute());
+            NumberFormat formatter = new DecimalFormat("00");
+            String startHour = formatter.format(task.getStartHour());
+            String startMin =formatter.format (task.getStartMinute());
+            String endHour=formatter.format (task.getEndHour());
+            String endMin=formatter.format (task.getEndMinute());
+            eventTime.setText (startHour+":"+startMin+"-"+endHour+":"+endMin);
             return convertView;
+        }
+        public void onClick (View view){
+            int position= (Integer) view.getTag();
+            Object object=getItem(position);
+            Task  service = (Task) object;
+
         }
     }
 

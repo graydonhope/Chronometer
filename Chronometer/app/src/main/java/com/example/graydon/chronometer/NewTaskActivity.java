@@ -248,9 +248,6 @@ public class NewTaskActivity extends AppCompatActivity {
                 event.addTask(newTask);
                 Log.d("!!!!!!!@@@@@@@", "addButtonClicked: ADDED TASK");
                 taskModel.addTaskToSpinner(newTask);
-//                Intent intent = new Intent(this, EventInfoProgressActivity.class);
-//                intent.putExtra("Event", event);
-//                startActivity(intent);
                 Intent intent = new Intent();
                 intent.putExtra("Task", newTask);
                 setResult(RESULT_OK,intent);
