@@ -34,7 +34,7 @@ public class selectedTask extends AppCompatActivity {
         AlertDialog.Builder alert = new AlertDialog.Builder(this,R.style.MyDialogTheme);
         alert.setCancelable(true);
         alert.setTitle("Delete");
-        alert.setMessage ("Are you sure you want to delete the following service ?");
+        alert.setMessage ("Are you sure you want to delete the following task ?");
         alert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
