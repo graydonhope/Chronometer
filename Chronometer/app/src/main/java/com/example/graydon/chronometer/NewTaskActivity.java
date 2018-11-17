@@ -29,7 +29,6 @@ public class NewTaskActivity extends AppCompatActivity {
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerStart;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerEnd;
     private int startTimeHour = -1, endTimeHour = -1, startTimeMinute = -1, endTimeMinute = -1, reminderTime = -1;
-    private boolean validNameEntered, validTimeframe, validRemindertime;
     private NewTaskModel taskModel;
     private StoredTaskManager storedTaskManager;
     private TimePickerDialog startTimePickerDialog, endTimePickerDialog;
@@ -47,26 +46,17 @@ public class NewTaskActivity extends AppCompatActivity {
         this.storedTaskManager = new StoredTaskManager();
         storedTaskManager.removeAllTasks(this.context);
         setContentView(R.layout.activity_newtask);
-        event = new Event();
-
-
-        /*
-        //Speak to Billal about what he will name event
         intent = getIntent();
-        event = intent.getParcelableExtra("Event");
-
-        */
-
-
+        event = intent.getParcelableExtra("event");
         spinner = findViewById(R.id.typeOfTask_spinner);
-        taskModel = new NewTaskModel(NewTaskActivity.this);
+        taskModel = new NewTaskModel(this);
         spinnerItems = taskModel.retrieveSpinnerItems();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.context, android.R.layout.simple_spinner_item, spinnerItems);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.context, android.R.layout.simple_spinner_item, spinnerItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
-        startDateDisplay = (TextView) findViewById(R.id.startDate_textView);
-        endDateDisplay = (TextView) findViewById(R.id.endDate_textView);
+        startDateDisplay = findViewById(R.id.startDate_textView);
+        endDateDisplay = findViewById(R.id.endDate_textView);
         startDateDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,11 +66,13 @@ public class NewTaskActivity extends AppCompatActivity {
                 boolean twentyfourHourTime = false;
                 TimePickerDialog dialog = new TimePickerDialog(
                         NewTaskActivity.this, android.R.style.Theme_Holo_Light_DarkActionBar, timePickerDialogListenerStart, hourOfDay, minute, twentyfourHourTime);
+
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
                 displayStartDate();
             }
         });
+
         endDateDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +82,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 boolean twentyfourHourTime = false;
                 TimePickerDialog dialog = new TimePickerDialog(
                         NewTaskActivity.this, android.R.style.Theme_Holo_Light_DarkActionBar, timePickerDialogListenerEnd, hourOfDay, minute, twentyfourHourTime);
+
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
                 displayEndDate();
@@ -103,12 +96,14 @@ public class NewTaskActivity extends AppCompatActivity {
                 startTimeMinute = minute;
                 String startTimeToDisplay;
                 String minuteToDisplay;
+
                 if(minute < 10){
                     minuteToDisplay = "0" + minute;
                 }
                 else{
                     minuteToDisplay = "" + minute;
                 }
+
                 if(hourOfDay < 10){
                     startTimeToDisplay = "0" + hourOfDay;
                 }
@@ -127,12 +122,14 @@ public class NewTaskActivity extends AppCompatActivity {
                 endTimeMinute = minute;
                 String endTimeToDisplay;
                 String minuteToDisplay;
+
                 if(minute < 10){
                     minuteToDisplay = "0" + minute;
                 }
                 else{
                     minuteToDisplay = "" + minute;
                 }
+
                 if(hourOfDay < 10){
                     endTimeToDisplay = "0" + hourOfDay;
                 }
@@ -145,6 +142,7 @@ public class NewTaskActivity extends AppCompatActivity {
         };
     }
 
+
     public void displayStartDate(){
         timePickerDialogListenerStart =  new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -153,12 +151,14 @@ public class NewTaskActivity extends AppCompatActivity {
                 startTimeMinute = minute;
                 String startTimeToDisplay;
                 String minuteToDisplay;
+
                 if(minute < 10){
                     minuteToDisplay = "0" + minute;
                 }
                 else{
                     minuteToDisplay = "" + minute;
                 }
+
                 if(hourOfDay < 10){
                     startTimeToDisplay = "0" + hourOfDay;
                 }
@@ -172,69 +172,27 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
-    /*
-    public void updateTimeDisplay(int startHour, int startMinute, int endHour, int endMinute){
-        startTimePickerDialog.updateTime(startHour, startMinute);
-        endTimePickerDialog.updateTime(endHour, endMinute);
-    }
-
-    */
-
-    public Event createEvent(){
-
-        Duration dur1 = new Duration(0,0);
-        Duration dur2 = new Duration(4,0);
-        Task task1 = new Task("Stock produce", dur1,dur2, 1);
-
-        Duration dur3 = new Duration(4,0);
-        Duration dur4 = new Duration(8,0);
-        Task task2 = new Task("Unload Delivery", dur3,dur4, 15);
-
-        Duration dur5 = new Duration(8,0);
-        Duration dur6 = new Duration(12,0);
-        Task task3 = new Task("Stock Toys", dur5,dur6, 15);
-
-        Duration dur7 = new Duration(12,0);
-        Duration dur8 = new Duration(16,0);
-        Task task4 = new Task("Stock Bed & Bath", dur7,dur8, 15);
-
-        Duration dur9 = new Duration(16,0);
-        Duration dur10 = new Duration(20,0);
-        Task task5 = new Task("Stock Seasonal", dur7,dur8, 15);
-
-        Duration dur11 = new Duration(20,0);
-        Duration dur12 = new Duration(23,59);
-        Task task6 = new Task("Stock Bed & Bath", dur11,dur12, 15);
-
-        event = new Event();
-        event.addTask(task1);
-        event.addTask(task2);
-        event.addTask(task3);
-        event.addTask(task4);
-        event.addTask(task5);
-        event.addTask(task6);
+    public Event getEvent(){
         return event;
     }
 
-    public Event getEvent(){
-        return createEvent();
-        //in future put return event once billal has sent me an event that i can add tasks to
-    }
 
     public void displayEndDate(){
         timePickerDialogListenerEnd = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                startTimeHour = hourOfDay;
-                startTimeMinute = minute;
+                endTimeHour = hourOfDay;
+                endTimeMinute = minute;
                 String endTimeToDisplay;
                 String minuteToDisplay;
+
                 if(minute < 10){
                     minuteToDisplay = "0" + minute;
                 }
                 else{
                     minuteToDisplay = "" + minute;
                 }
+
                 if(hourOfDay < 10){
                     endTimeToDisplay = "0" + hourOfDay;
                 }
@@ -248,8 +206,11 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
-    public void isValidTimeframe(){
+    public boolean isValidTimeframe(){
+        boolean validTimeframe = false;
+
         if(startTimeHour != -1 && startTimeMinute != -1 && endTimeHour != -1 && endTimeMinute != -1){
+
             if((startTimeHour < endTimeHour) || ((startTimeHour <= endTimeHour) && startTimeMinute < endTimeMinute)){
                 validTimeframe = true;
             }
@@ -258,76 +219,80 @@ public class NewTaskActivity extends AppCompatActivity {
             }
         }
 
+        return validTimeframe;
     }
 
-    public void isValidNameEntered(){
-        EditText taskNameEditText= (EditText) findViewById(R.id.taskNameEditText);
+
+    public boolean isValidNameEntered(){
+        boolean validNameEntered;
+        EditText taskNameEditText = findViewById(R.id.taskNameEditText);
         taskName = taskNameEditText.getText().toString();
+
         if(!taskName.equals("")){
-            validNameEntered = true;
+            validNameEntered = taskModel.checkName(event, taskName);
         }
         else{
             validNameEntered = false;
         }
+
+        return validNameEntered;
     }
 
-    public void isValidReminder(){
-        TextView reminder_number = (TextView) findViewById(R.id.reminderTime_textView);
+
+    public boolean isValidReminder(){
+        boolean validReminderTime;
+        TextView reminder_number = findViewById(R.id.reminderTime_textView);
         Integer reminder_amount = Integer.parseInt(reminder_number.getText().toString());
-        reminderTime = (int) reminder_amount;
+        reminderTime = reminder_amount;
+
         if(!(reminderTime == -1)){
-            validRemindertime = true;
+            validReminderTime = true;
         }
         else{
-            validRemindertime = false;
+            validReminderTime = false;
         }
+
+        return validReminderTime;
     }
+
 
     public void addButtonClicked(View view){
         //create new task - need name, hours, minutes, reminder
-        isValidNameEntered(); isValidReminder(); isValidTimeframe();
-        if(validNameEntered && validTimeframe && validRemindertime){
+        if(isValidNameEntered() && isValidTimeframe() && isValidReminder()){
             Duration startTime = new Duration(this.startTimeHour, this.startTimeMinute);
             Duration endTime = new Duration(this.endTimeHour, this.endTimeMinute);
-            taskModel.setStartTime(startTime);
-            taskModel.setEndTime(endTime);
-            taskModel.setTaskName(taskName);
-            taskModel.setStart(startTime); taskModel.setEnd(endTime);
-            Context contextToSend = getApplicationContext();
-            if(!taskModel.checkTimeFrame()){
+
+            if(taskModel.checkTimeFrame(event, startTime, endTime)){
                 Task newTask = new Task(taskName, startTime, endTime, reminderTime);
                 taskModel.saveTask(this, newTask);
                 event.addTask(newTask);
-                Log.d("!!!!!!!@@@@@@@", "addButtonClicked: ADDED TASK");
                 taskModel.addTaskToSpinner(newTask);
+
                 if(taskModel.checkSavedTasks(newTask)){
                     storedTaskManager.addTask(this.context, newTask);
-                    Log.d("!!!!XXXXXXXXXX", "addButtonClicked: Task was saved! Hooray!! :D");
+                    Log.d("ghope04999", "addButtonClicked: Task was saved");
                 }
                 else{
-                    Log.d("@@@@@@@@@@@!!!!!!!", "addButtonClicked: Task was not saved");
+                    Log.d("ghope04999", "addButtonClicked: Task was not saved");
                 }
-
                 Intent intent = new Intent();
                 intent.putExtra("Task", newTask);
                 setResult(RESULT_OK,intent);
                 finish ();
+            }
+            else{
+                Toast.makeText(this, "Unable to Add Task" , Toast.LENGTH_LONG).show();
             }
         }
         else{
             Toast.makeText(this, "Unable to add Task ", Toast.LENGTH_LONG).show();
         }
     }
+
+
     public void cancelButton (View view){
         Intent intent = new Intent(this, EventInfoActivity.class);
         setResult (RESULT_CANCELED,intent);
-
         finish();
     }
 }
-//TODO
-/*Graydon to access the event object i am sending to your activity via intent use the following code
-* Intent intent=getIntent ()//what this line does is, it gets the intent that was used to switch us to the activity
-* Event event=intent.getParcelableExtra ("event");//here you are making your own Event var and storing the Event from
-*                                                   my activity into your activity which is saved in event.
-*                                                   the "event" is the name of the object i gave to the intent(EventInfoActivity line 55 and 56)*/

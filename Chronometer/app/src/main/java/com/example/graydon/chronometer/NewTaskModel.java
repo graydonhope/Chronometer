@@ -9,6 +9,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +21,10 @@ public class NewTaskModel extends AppCompatActivity{
     private List<String> spinnerItems;
     private String name;
     private Context context;
+    private Event event;
     private Duration startDuration, endDuration;
-   //private static NewTaskModel instance;
     private int taskListSize, currentStartTimeHour, currentEndTimeHour, currentStartTimeMinute, currentEndTimeMinute;
     private NewTaskActivity taskActivity;
-    //private NewTaskActivity newTaskActivity;
-   // private Spinner spinner;
 
     //NEED to save the spinner items list so that after you click "end task" and it comes back to the
     // new Task page, it keeps the new task in the spinner dropdown menu. problem now is that every time you get to
@@ -55,6 +54,33 @@ public class NewTaskModel extends AppCompatActivity{
         return nameFound;
     }
 
+    public boolean checkName(Event event, String taskName){
+        if(event == null){
+            throw new IllegalArgumentException("event cannot be null");
+        }
+        else if(event.isEmpty()){
+            return true;
+        }
+        else{
+            ArrayList<Task> tasks = event.getTasks();
+            int numberOfTasks = tasks.size();
+            boolean validName = false;
+            for(int i = 0; i < numberOfTasks; i++){
+                if(event.getTask(i).getName().equals(taskName)){
+                    validName = false;
+                    Log.d("ghope04999", "checkName: Name is equal to anothjer name!!");
+                    break;
+                }
+                else{
+                    validName = true;
+                }
+            }
+            return validName;
+        }
+    }
+
+
+
     public boolean checkSavedTasks(Task task){
 
         boolean canSaveTask = false;
@@ -73,63 +99,76 @@ public class NewTaskModel extends AppCompatActivity{
         return canSaveTask;
     }
 
-    public boolean checkTimeFrame(){
+    public boolean checkTimeFrame(Event eventPassed, Duration startDuration, Duration endDuration){
 
-        Event event = taskActivity.getEvent();
-        ArrayList<Task> tasks = event.getTasks();
-        Log.d("PPPPPPPPP", "checkTimeFrame: number of tasks: " + tasks.size());
-        boolean validTime = true;
+        event = eventPassed;
+        Log.d("ghope0494449", "checkTimeFrame: Is event null?" + " " + (event == null));
+        boolean newEvent = (event == null);
+        if(!newEvent){
+            Log.d("##########", "checkTimeFrame: First IF STATEMENT");
+            if(!event.isEmpty()){
+                Log.d("#########", "checkTimeFrame: Second if checking if event has any tasks");
+                ArrayList<Task> tasks = event.getTasks();
+                Log.d("PPPPPPPPP", "checkTimeFrame: number of tasks: " + tasks.size());
+                boolean validTime = true;
 
-        if(tasks.size() == 0){
-            validTime = true;
-        }
-
-        else{
-
-            taskListSize = tasks.size();
-            this.currentStartTimeHour   = this.startDuration.getHour();
-            this.currentEndTimeHour     = this.endDuration.getHour();
-            this.currentStartTimeMinute = this.startDuration.getMinute();
-            this.currentEndTimeMinute   = this.endDuration.getMinute();
-            //Need to change from checking all saved tasks to just "current" ones
-            for(int i = 0; i < taskListSize; i++){
-                Task taskAtIteration = tasks.get(i);
-
-                Log.d("XXXXXXXXXX", "checkTimeFrame: task time start: " + taskAtIteration.getStartHour());
-                Log.d("XXXXXXXXXXXXX", "checkTimeFrame: adding task start time: " + currentStartTimeHour);
-
-
-                //check if time has been added
-                int startHour   = taskAtIteration.getStartHour();
-                // int startMinute = taskAtIteration.getStartMinute();
-                int endHour     = taskAtIteration.getEndHour();
-                //int endMinute   = taskAtIteration.getEndMinute();
-                if(currentStartTimeHour == -1 && currentStartTimeMinute == -1 && currentEndTimeHour == -1 && currentEndTimeMinute == -1){
-                    validTime = false;
+                if(tasks.size() == 0){
+                    validTime = true;
                 }
 
-                if((currentStartTimeHour < startHour) && (currentEndTimeHour > endHour)){
-                    validTime = false;
-                }
+                else{
+                    taskListSize = tasks.size();
+                    this.currentStartTimeHour   = startDuration.getHour();
+                    this.currentEndTimeHour     = endDuration.getHour();
+                    this.currentStartTimeMinute = startDuration.getMinute();
+                    this.currentEndTimeMinute   = endDuration.getMinute();
+                    //Need to change from checking all saved tasks to just "current" ones
+                    for(int i = 0; i < taskListSize; i++){
+                        Task taskAtIteration = tasks.get(i);
 
-                if(((currentStartTimeHour < startHour) && ((currentEndTimeHour > startHour) && (currentEndTimeHour <= endHour))) ||  (startHour < currentStartTimeHour) && ((endHour > currentStartTimeHour) && (endHour <= currentEndTimeHour))){
-                    validTime = false;
-                }
+                        Log.d("ghope04999", "checkTimeFrame: task time start: " + taskAtIteration.getStartHour());
 
-                if(currentStartTimeHour == startHour){
-                    validTime = false;
-                }
+                        //check if time has been added
+                        int startHour   = taskAtIteration.getStartHour();
+                        // int startMinute = taskAtIteration.getStartMinute();
+                        int endHour     = taskAtIteration.getEndHour();
+                        //int endMinute   = taskAtIteration.getEndMinute();
+                        if(currentStartTimeHour == -1 && currentStartTimeMinute == -1 && currentEndTimeHour == -1 && currentEndTimeMinute == -1){
+                            validTime = false;
+                        }
 
-                if((currentStartTimeHour > currentEndTimeHour) || ((currentStartTimeHour == currentEndTimeHour) && (currentStartTimeMinute >= currentEndTimeMinute)) ){
-                    validTime = false;
-                }
+                        if((currentStartTimeHour < startHour) && (currentEndTimeHour > endHour)){
+                            validTime = false;
+                        }
 
-                if(((currentStartTimeHour > startHour) && (currentStartTimeHour < endHour)) || ((currentEndTimeHour > startHour) && (currentEndTimeHour < endHour))){
-                    validTime = false;
+                        if(((currentStartTimeHour < startHour) && ((currentEndTimeHour > startHour) && (currentEndTimeHour <= endHour))) ||  (startHour < currentStartTimeHour) && ((endHour > currentStartTimeHour) && (endHour <= currentEndTimeHour))){
+                            validTime = false;
+                            Log.d("ghope04999", "checkTimeFrame: this is null? " + (this == null));
+                        }
+
+                        if(currentStartTimeHour == startHour){
+                            validTime = false;
+                        }
+
+                        if((currentStartTimeHour > currentEndTimeHour) || ((currentStartTimeHour == currentEndTimeHour) && (currentStartTimeMinute >= currentEndTimeMinute)) ){
+                            validTime = false;
+                        }
+
+                        if(((currentStartTimeHour > startHour) && (currentStartTimeHour < endHour)) || ((currentEndTimeHour > startHour) && (currentEndTimeHour < endHour))){
+                            validTime = false;
+                        }
+                    }
                 }
+                Log.d("ghope04999", "checkTimeFrame: Deeper valid time: " + validTime);
+                return validTime;
+            }//end of tasks isEmpty
+            else{
+                return true;
             }
+        }//end of event being null check
+        else{
+            return true;
         }
-        return validTime;
     }
 
     public void saveTask(Context context, Task task){

@@ -54,7 +54,7 @@ public class EventInfoActivity extends AppCompatActivity {
     public void addButtonClick (View view){
         Intent intent =new Intent (this,NewTaskActivity.class);
         intent.putExtra ("event",event);
-       startActivityForResult(intent,0);
+        startActivityForResult(intent,0);
     }
     public void startButtonClick (View view){
         if (!event.isEmpty ()){
