@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">Chronometer</string>
-    <string-array name = "spinnerItems">
+    <string-array name="spinnerItems">
         <item>New</item>
         <item>Load</item>
-    </string-array>string-array>
-    <string-array name = "reminderItems">
+    </string-array>
+    string-array>
+    <string-array name="reminderItems">
         <item>15 Minutes</item>
     </string-array>
-    <string-array name = "AM_PM">
+    <string-array name="AM_PM">
         <item>AM</item>
         <item>PM</item>
     </string-array>

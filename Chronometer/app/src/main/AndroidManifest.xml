@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.graydon.chronometer">
-    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -10,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".EventInfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,13 +21,16 @@
         </activity>
         <activity android:name=".NewTaskActivity" />
         <activity android:name=".EventInfoProgressActivity" />
-        <receiver android:name=".AlarmReceiver"/>
+
+        <receiver android:name=".AlarmReceiver" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <service android:name=".AlarmAlertService"/>
+        <service android:name=".AlarmAlertService" />
 
+        <activity android:name=".selectedTask"></activity>
     </application>
 
 </manifest>

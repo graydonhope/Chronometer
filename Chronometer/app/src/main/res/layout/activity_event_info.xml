@@ -65,11 +65,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.982" />
+
     <ListView
+        android:id="@+id/eventList"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:id="@+id/eventList"
-        android:textColor="#FCFCFC">
+        android:textColor="#FCFCFC"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
     </ListView>
 
