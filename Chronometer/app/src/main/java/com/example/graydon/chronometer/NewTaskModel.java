@@ -23,6 +23,7 @@ public class NewTaskModel extends AppCompatActivity{
     private Duration startDuration, endDuration;
    //private static NewTaskModel instance;
     private int taskListSize, currentStartTimeHour, currentEndTimeHour, currentStartTimeMinute, currentEndTimeMinute;
+    private NewTaskActivity taskActivity;
     //private NewTaskActivity newTaskActivity;
    // private Spinner spinner;
 
@@ -35,6 +36,7 @@ public class NewTaskModel extends AppCompatActivity{
         spinnerItems.add("New");
         this.allTasksList  = storedTaskManager.getAllTasks(context);
         this.context = context;
+        this.taskActivity = new NewTaskActivity();
     }
 
 
@@ -53,44 +55,78 @@ public class NewTaskModel extends AppCompatActivity{
         return nameFound;
     }
 
+    public boolean checkSavedTasks(Task task){
+
+        boolean canSaveTask = false;
+        ArrayList<Task> tasks = storedTaskManager.getAllTasks(context);
+        String taskName = task.getName();
+
+        for(int i = 0; i < tasks.size(); i++){
+            if(!tasks.get(i).getName().equals(taskName)){
+                canSaveTask = false;
+                break;
+            }
+            else{
+                canSaveTask = true;
+            }
+        }
+        return canSaveTask;
+    }
+
     public boolean checkTimeFrame(){
 
+        Event event = taskActivity.getEvent();
+        ArrayList<Task> tasks = event.getTasks();
+        Log.d("PPPPPPPPP", "checkTimeFrame: number of tasks: " + tasks.size());
         boolean validTime = true;
-        taskListSize = allTasksList.size();
-        this.currentStartTimeHour   = this.startDuration.getHour();
-        this.currentEndTimeHour     = this.endDuration.getHour();
-        this.currentStartTimeMinute = this.startDuration.getMinute();
-        this.currentEndTimeMinute   = this.endDuration.getMinute();
-        //Need to change from checking all saved tasks to just "current" ones
-        for(int i = 0; i < taskListSize; i++){
-            Task taskAtIteration = storedTaskManager.getTask(this.context, i);
-            //check if time has been added
-            int startHour   = taskAtIteration.getStartHour();
-           // int startMinute = taskAtIteration.getStartMinute();
-            int endHour     = taskAtIteration.getEndHour();
-            //int endMinute   = taskAtIteration.getEndMinute();
-            if(currentStartTimeHour == -1 && currentStartTimeMinute == -1 && currentEndTimeHour == -1 && currentEndTimeMinute == -1){
-                validTime = false;
-            }
 
-            if((currentStartTimeHour < startHour) && (currentEndTimeHour > endHour)){
-                validTime = false;
-            }
+        if(tasks.size() == 0){
+            validTime = true;
+        }
 
-            if(((currentStartTimeHour < startHour) && ((currentEndTimeHour > startHour) && (currentEndTimeHour <= endHour))) ||  (startHour < currentStartTimeHour) && ((endHour > currentStartTimeHour) && (endHour <= currentEndTimeHour))){
-                validTime = false;
-            }
+        else{
 
-            if(currentStartTimeHour == startHour){
-                validTime = false;
-            }
+            taskListSize = tasks.size();
+            this.currentStartTimeHour   = this.startDuration.getHour();
+            this.currentEndTimeHour     = this.endDuration.getHour();
+            this.currentStartTimeMinute = this.startDuration.getMinute();
+            this.currentEndTimeMinute   = this.endDuration.getMinute();
+            //Need to change from checking all saved tasks to just "current" ones
+            for(int i = 0; i < taskListSize; i++){
+                Task taskAtIteration = tasks.get(i);
 
-            if((currentStartTimeHour > currentEndTimeHour) || ((currentStartTimeHour == currentEndTimeHour) && (currentStartTimeMinute >= currentEndTimeMinute)) ){
-                validTime = false;
-            }
+                Log.d("XXXXXXXXXX", "checkTimeFrame: task time start: " + taskAtIteration.getStartHour());
+                Log.d("XXXXXXXXXXXXX", "checkTimeFrame: adding task start time: " + currentStartTimeHour);
 
-            if(((currentStartTimeHour > startHour) && (currentStartTimeHour < endHour)) || ((currentEndTimeHour > startHour) && (currentEndTimeHour < endHour))){
-                validTime = false;
+
+                //check if time has been added
+                int startHour   = taskAtIteration.getStartHour();
+                // int startMinute = taskAtIteration.getStartMinute();
+                int endHour     = taskAtIteration.getEndHour();
+                //int endMinute   = taskAtIteration.getEndMinute();
+                if(currentStartTimeHour == -1 && currentStartTimeMinute == -1 && currentEndTimeHour == -1 && currentEndTimeMinute == -1){
+                    validTime = false;
+                }
+
+                if((currentStartTimeHour < startHour) && (currentEndTimeHour > endHour)){
+                    validTime = false;
+                }
+
+                if(((currentStartTimeHour < startHour) && ((currentEndTimeHour > startHour) && (currentEndTimeHour <= endHour))) ||  (startHour < currentStartTimeHour) && ((endHour > currentStartTimeHour) && (endHour <= currentEndTimeHour))){
+                    validTime = false;
+                }
+
+                if(currentStartTimeHour == startHour){
+                    validTime = false;
+                }
+
+                if((currentStartTimeHour > currentEndTimeHour) || ((currentStartTimeHour == currentEndTimeHour) && (currentStartTimeMinute >= currentEndTimeMinute)) ){
+                    validTime = false;
+                }
+
+                if(((currentStartTimeHour > startHour) && (currentStartTimeHour < endHour)) || ((currentEndTimeHour > startHour) && (currentEndTimeHour < endHour))){
+                    validTime = false;
+                }
             }
         }
         return validTime;
