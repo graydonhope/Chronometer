@@ -19,6 +19,7 @@ import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class EventInProgressModel {
     private Event event;
@@ -132,12 +133,19 @@ public class EventInProgressModel {
         String htmlReport = "";
         String greenHex = "#339966";
         String redHex = "#ff0000";
-        final String singleTaskFormat = "<p><strong>-task-</strong> was <span style=\"color: -colourhex-;\">-completionstatus-</span> in time.</p><br>";
+        final String header = "<h1><strong>End of Day Report&nbsp;</strong></h1>\n" +
+                "<h3><strong>-date-</strong></h3>\n";
+        final String singleTaskFormat =
+                "<ul>\n" +
+                "<li><strong>-task-</strong> was <span style=\"color: -colourhex-;\">-completionstatus-</span> in time.</li>\n" +
+                "</ul>\n";
+
+        final String bottomTag = "<p>created by the Chronometer app available in the Google Play Store.</p>";
 
 
         for(int i = 0; i < tasks.size(); i++){
             Task task = tasks.get(i);
-            String taskHtml = singleTaskFormat.replaceFirst("-task-", task.getName());
+            String taskHtml = singleTaskFormat.replaceFirst("-task-", task.getName()).replaceFirst("-date-",getDate());
             if(task.getIsComplete()){
                 String completionStatus = "completed";
                 taskHtml = taskHtml.replaceFirst("-colourhex-",greenHex).replaceFirst("-completionstatus-",completionStatus);
@@ -148,10 +156,15 @@ public class EventInProgressModel {
             }
             htmlReport += taskHtml;
         }
-        return htmlReport;
+        return header + htmlReport + bottomTag;
     }
 
-
+    public String getDate() {
+        String dayOfWeek = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG, Locale.getDefault());
+        String monthOfYear = Calendar.getInstance().getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.getDefault());
+        String dayOfMonth = Integer.toString(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        return dayOfWeek + " " + monthOfYear + " " + dayOfMonth;
+    }
 
 
 

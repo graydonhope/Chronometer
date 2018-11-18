@@ -151,11 +151,15 @@ public class Event implements Parcelable{
 	 * @return the string representation of an event
 	 */
 	public String toString(){
+	    if (tasks.size() == 0)
+	        return "Size : 0";
+
+
 		StringBuilder stringEvent = new StringBuilder("[");
 		for(int i = 0; i < tasks.size()-1; i++){
-			stringEvent.append(tasks.get(i).getName() + ",");
+			stringEvent.append(tasks.get(i).toString() + ",");
 		}
-		stringEvent.append(tasks.get(tasks.size()-1).getName() + "]");
+		stringEvent.append(tasks.get(tasks.size()-1).toString() + "]");
 		stringEvent.append(" Size: " + tasks.size());
 		return stringEvent.toString();
 	}
