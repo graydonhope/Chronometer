@@ -26,6 +26,7 @@ public class NewTaskActivity extends AppCompatActivity {
     private TextView startDateDisplay;
     private TextView endDateDisplay;
     private TextView taskNameDisplay;
+    private TextView editReminderTime;
     private String taskName;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerStart;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerEnd;
@@ -57,6 +58,7 @@ public class NewTaskActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
         taskNameDisplay = findViewById(R.id.taskNameEditText);
+        editReminderTime = findViewById(R.id.editReminderTime);
         startDateDisplay = findViewById(R.id.startDate_textView);
         endDateDisplay = findViewById(R.id.endDate_textView);
         startDateDisplay.setOnClickListener(new View.OnClickListener() {
@@ -242,19 +244,25 @@ public class NewTaskActivity extends AppCompatActivity {
 
 
     public boolean isValidReminder(){
-        boolean validReminderTime;
-        TextView reminder_number = findViewById(R.id.reminderTime_textView);
-        Integer reminder_amount = Integer.parseInt(reminder_number.getText().toString());
-        reminderTime = reminder_amount;
+        boolean validReminderTime = false;
 
-        if(!(reminderTime == -1)){
-            validReminderTime = true;
+        try{
+            String reminderTimeEntry = (String) editReminderTime.getText().toString();
+            reminderTime = Integer.parseInt(reminderTimeEntry);
+
+            if(reminderTime > 0){
+                validReminderTime = true;
+            }
+            else{
+                validReminderTime = false;
+            }
+
         }
-        else{
-            validReminderTime = false;
+        catch(NumberFormatException e){
+            Toast.makeText(this, "Invalid Reminder Time", Toast.LENGTH_LONG).show();
         }
 
-        return validReminderTime;
+     return validReminderTime;
     }
 
 
@@ -287,7 +295,7 @@ public class NewTaskActivity extends AppCompatActivity {
             }
         }
         else{
-            Toast.makeText(this, "Unable to add Task ", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Unable to add Task!! ", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -313,7 +321,7 @@ public class NewTaskActivity extends AppCompatActivity {
             int numberOfTasks = tasks.size();
 
             if(numberOfTasks <= 0){
-                Log.d("ghope04999", "displaySelectedTaskData: NOT GOOOOOOOOD SOMETHING WRONG");
+                Log.d("ghope04999", "displaySelectedTaskData: Incorrect Amount of Tasks");
             }
 
             Task loadedTask = null;
@@ -337,6 +345,11 @@ public class NewTaskActivity extends AppCompatActivity {
                 Toast.makeText(this, "Unable to find task", Toast.LENGTH_LONG).show();
             }
         }
+        else{
+            taskNameDisplay.setText("");
+            startDateDisplay.setText("1:00 PM");
+            endDateDisplay.setText("2:00 PM");
+        }
     }
 
 
@@ -344,46 +357,47 @@ public class NewTaskActivity extends AppCompatActivity {
 
         Duration startDuration = task.getStartDuration();
         Duration endDuration = task.getEndDuration();
-        int reminderTime = task.getReminderTimeMinutes();
-        int startHour = startDuration.getHour();
-        int startMinute = startDuration.getMinute();
-        int endHour = endDuration.getHour();
-        int endMinute = endDuration.getMinute();
+        reminderTime = task.getReminderTimeMinutes();
+        Log.d("ghope04999", "displaySelectedTask: Reminder time from loaded task: " + reminderTime);
+        startTimeHour = startDuration.getHour();
+        startTimeMinute = startDuration.getMinute();
+        endTimeHour = endDuration.getHour();
+        endTimeMinute = endDuration.getMinute();
 
         String startTimeToDisplay;
         String startMinuteToDisplay;
         String endTimeToDisplay;
         String endMinuteToDisplay;
 
-        if(startMinute < 10){
-            startMinuteToDisplay = "0" + startMinute;
+        if(startTimeMinute < 10){
+            startMinuteToDisplay = "0" + startTimeMinute;
         }
         else{
-            startMinuteToDisplay = "" + startMinute;
+            startMinuteToDisplay = "" + startTimeMinute;
         }
 
-        if(startHour < 10){
-            startTimeToDisplay = "0" + startHour;
+        if(startTimeHour < 10){
+            startTimeToDisplay = "0" + startTimeHour;
         }
         else{
-            startTimeToDisplay = "" + startHour;
+            startTimeToDisplay = "" + startTimeHour;
         }
 
         String time = startTimeToDisplay + ":" + startMinuteToDisplay;
         startDateDisplay.setText(time);
 
-        if(endMinute < 10){
-            endMinuteToDisplay = "0" + endMinute;
+        if(endTimeMinute < 10){
+            endMinuteToDisplay = "0" + endTimeMinute;
         }
         else{
-            endMinuteToDisplay = "" + endMinute;
+            endMinuteToDisplay = "" + endTimeMinute;
         }
 
-        if(endHour < 10){
-            endTimeToDisplay = "0" + endHour;
+        if(endTimeHour < 10){
+            endTimeToDisplay = "0" + endTimeHour;
         }
         else{
-            endTimeToDisplay = "" + endHour;
+            endTimeToDisplay = "" + endTimeHour;
         }
 
         String endTime = endTimeToDisplay + ":" + endMinuteToDisplay;
@@ -391,6 +405,9 @@ public class NewTaskActivity extends AppCompatActivity {
 
         String taskName = task.getName();
         taskNameDisplay.setText(taskName);
+
+        String stringReminderTime = Integer.toString(reminderTime);
+        editReminderTime.setText(stringReminderTime);
     }
 
 
