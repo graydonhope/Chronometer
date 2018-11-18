@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewTaskModel extends AppCompatActivity{
 
@@ -14,6 +15,8 @@ public class NewTaskModel extends AppCompatActivity{
     private Duration startDuration, endDuration;
     private int taskListSize, currentStartTimeHour, currentEndTimeHour, currentStartTimeMinute, currentEndTimeMinute;
     private NewTaskActivity taskActivity;
+    private ArrayList<Task> allTasksList;
+    private List<String> spinnerItems;
 
 
     /**
@@ -21,6 +24,9 @@ public class NewTaskModel extends AppCompatActivity{
      * @param context
      */
     public NewTaskModel(Context context){
+        spinnerItems = new ArrayList<String>();
+        spinnerItems.add("New");
+        this.allTasksList  = storedTaskManager.getAllTasks(context);
         this.context = context;
         this.taskActivity = new NewTaskActivity();
     }
@@ -33,7 +39,6 @@ public class NewTaskModel extends AppCompatActivity{
      * @return boolean
      */
     public boolean checkName(Event event, String taskName){
-
         if(event == null){
             throw new IllegalArgumentException("event cannot be null");
         }
@@ -45,10 +50,8 @@ public class NewTaskModel extends AppCompatActivity{
             int numberOfTasks = tasks.size();
             boolean validName = false;
             for(int i = 0; i < numberOfTasks; i++){
-
                 if(event.getTask(i).getName().equals(taskName)){
                     validName = false;
-                    Log.d("ghope04999", "checkName: Name is equal to another name");
                     break;
                 }
                 else{
@@ -60,6 +63,7 @@ public class NewTaskModel extends AppCompatActivity{
     }
 
 
+
     /**
      * Returns a boolean value to ensure a unique task name.
      * @param task
@@ -69,16 +73,28 @@ public class NewTaskModel extends AppCompatActivity{
         boolean canSaveTask = false;
         ArrayList<Task> tasks = storedTaskManager.getAllTasks(context);
         String taskName = task.getName();
-        for(int i = 0; i < tasks.size(); i++){
+        int numberOfTasks = tasks.size();
+        Log.d("ghope04999", "checkSavedTasks: Numebr of tasks: " + numberOfTasks);
 
-            if(!tasks.get(i).getName().equals(taskName)){
-                canSaveTask = false;
-                break;
-            }
-            else{
-                canSaveTask = true;
+        if(numberOfTasks < 1){
+            canSaveTask = true;
+        }
+        else{
+            for(int i = 0; i < numberOfTasks; i++){
+
+                if(tasks.get(i).getName().equals(taskName)){
+                    canSaveTask = false;
+                    Log.d("ghope04999", "checkSavedTasks: Current task name: " + task.getName());
+                    Log.d("ghope04999", "checkSavedTasks: Found it here: " + tasks.get(i).getName());
+                    break;
+                }
+                else{
+                    Log.d("ghope04999", "checkSavedTasks: inside else????");
+                    canSaveTask = true;
+                }
             }
         }
+        Log.d("ghope04999", "checkSavedTasks: boolean: " + canSaveTask);
         return canSaveTask;
     }
 
@@ -113,6 +129,8 @@ public class NewTaskModel extends AppCompatActivity{
                         Task taskAtIteration = tasks.get(i);
                         int startHour   = taskAtIteration.getStartHour();
                         int endHour     = taskAtIteration.getEndHour();
+                        int startMinute = taskAtIteration.getStartMinute();
+                        int endMinute   = taskAtIteration.getEndMinute();
 
                         if(currentStartTimeHour == -1 && currentStartTimeMinute == -1 && currentEndTimeHour == -1 && currentEndTimeMinute == -1){
                             validTime = false;
@@ -126,7 +144,7 @@ public class NewTaskModel extends AppCompatActivity{
                             validTime = false;
                         }
 
-                        if(currentStartTimeHour == startHour){
+                        if((currentStartTimeHour == startHour) && ((currentStartTimeMinute <= startMinute) || (currentStartTimeMinute <=endMinute))){
                             validTime = false;
                         }
 
