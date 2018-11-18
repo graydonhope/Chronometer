@@ -307,7 +307,6 @@ public class NewTaskActivity extends AppCompatActivity {
                 event.addTask(newTask);
 
                 if(taskModel.checkSavedTasks(newTask)){
-                    storedTaskManager.addTask(this.context, newTask);
                     taskModel.saveTask(this, newTask);
                     spinnerItems.add(newTask.getName());
                     Log.d("ghope04999", "addButtonClicked: Task was saved");
@@ -321,11 +320,11 @@ public class NewTaskActivity extends AppCompatActivity {
                 finish ();
             }
             else{
-                Toast.makeText(this, "Unable to Add Task" , Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Unable to Add Task. Invalid time frame" , Toast.LENGTH_LONG).show();
             }
         }
         else{
-            Toast.makeText(this, "Unable to add Task!! ", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please enter a valid task name, reminder time, and time frame", Toast.LENGTH_LONG).show();
         }
     }
 
