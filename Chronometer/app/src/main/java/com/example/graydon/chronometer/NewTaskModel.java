@@ -14,8 +14,6 @@ public class NewTaskModel extends AppCompatActivity{
     private Event event;
     private Duration startDuration, endDuration;
     private int taskListSize, currentStartTimeHour, currentEndTimeHour, currentStartTimeMinute, currentEndTimeMinute;
-    private NewTaskActivity taskActivity;
-    private ArrayList<Task> allTasksList;
     private List<String> spinnerItems;
 
 
@@ -24,11 +22,9 @@ public class NewTaskModel extends AppCompatActivity{
      * @param context
      */
     public NewTaskModel(Context context){
-        spinnerItems = new ArrayList<String>();
+        spinnerItems = new ArrayList<>();
         spinnerItems.add("New");
-        this.allTasksList  = storedTaskManager.getAllTasks(context);
         this.context = context;
-        this.taskActivity = new NewTaskActivity();
     }
 
 
