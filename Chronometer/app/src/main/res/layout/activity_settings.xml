@@ -38,6 +38,27 @@
         app:layout_constraintEnd_toStartOf="@+id/emailField"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <Button
+        android:id="@+id/editTaskButton"
+        android:layout_width="124dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rectangular_round"
+        android:inputType="none"
+        android:onClick="editTask"
+        android:text="@string/Edit_Saved_Tasks"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.866" />
+
+
+
     <Switch
         android:id="@+id/reportSwitch"
         android:layout_width="325dp"

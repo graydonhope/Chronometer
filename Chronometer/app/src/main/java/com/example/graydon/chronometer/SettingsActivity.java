@@ -1,6 +1,7 @@
 package com.example.graydon.chronometer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -61,6 +62,11 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString("UserEmail",emailField.getText().toString());
         sharedPreferencesEditor.apply();
+    }
+
+    public void editTask(View view){
+        Intent startEditTaskActivity = new Intent(this, EditTaskActivity.class);
+        startActivity(startEditTaskActivity);
     }
 
 }
