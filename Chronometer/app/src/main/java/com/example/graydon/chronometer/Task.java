@@ -4,11 +4,20 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Task implements Parcelable{
+
     private String name;
     private boolean isComplete;
     private Duration startDuration, endDuration;
     private int reminderTime;
 
+
+    /**
+     * Constructor for Task. Requires start and end Durations, a task name, and reminder time amount in minutes.
+     * @param name
+     * @param startTime
+     * @param endTime
+     * @param reminderTimeMinutes
+     */
     public Task(String name, Duration startTime, Duration endTime, int reminderTimeMinutes) {
         this.reminderTime = reminderTimeMinutes;
         this.name = name;
@@ -16,10 +25,21 @@ public class Task implements Parcelable{
         this.startDuration = startTime;
         this.endDuration = endTime;
     }
+
+
+    /**
+     * Returns the name of the Task.
+     * @return String
+     */
     public String toString (){
         return name;
     }
 
+
+    /**
+     * Parcelable requirements.
+     * @param in
+     */
     protected Task(Parcel in) {
         name = in.readString();
         isComplete = in.readByte() != 0;
@@ -28,6 +48,10 @@ public class Task implements Parcelable{
         reminderTime = in.readInt();
     }
 
+
+    /**
+     * Parcelable related creations.
+     */
     public static final Creator<Task> CREATOR = new Creator<Task>() {
         @Override
         public Task createFromParcel(Parcel in) {
@@ -41,16 +65,31 @@ public class Task implements Parcelable{
     };
 
     /**
-     *
-     * @return
+     *Returns if the task has been completed
+     * @return boolean
      */
     public boolean getIsComplete() {
         return this.isComplete;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeByte((byte) (isComplete ? 1 : 0));
+        dest.writeParcelable(startDuration, flags);
+        dest.writeParcelable(endDuration, flags);
+        dest.writeInt(reminderTime);
+    }
+
+
     /**
-     *
-     * @param isComplete
+     * Setters and Getters for instance variables.
      */
     public void setIsComplete(boolean isComplete){
         this.isComplete = isComplete;
@@ -80,28 +119,8 @@ public class Task implements Parcelable{
         return this.endDuration.getMinute();
     }
 
-    public void setStartHour(int startHour){
-        this.startDuration.setHour(startHour);
-    }
-
-    public void setStartTimeMinute(int startTimeMinute){
-        this.startDuration.setMinute(startTimeMinute);
-    }
-
-    public void setEndTimeMinute(int endTimeMinute){
-        this.endDuration.setMinute(endTimeMinute);
-    }
-
-    public void setEndHour(int endHour){
-        this.endDuration.setHour(endHour);
-    }
-
     public int getReminderTimeMinutes(){
         return this.reminderTime;
-    }
-
-    public void setReminderMinutes(int reminderTime){
-        this.reminderTime = reminderTime;
     }
 
     public String getName() {
@@ -110,20 +129,6 @@ public class Task implements Parcelable{
 
     public void setName(String name){
         this.name = name;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeByte((byte) (isComplete ? 1 : 0));
-        dest.writeParcelable(startDuration, flags);
-        dest.writeParcelable(endDuration, flags);
-        dest.writeInt(reminderTime);
     }
 }
 
