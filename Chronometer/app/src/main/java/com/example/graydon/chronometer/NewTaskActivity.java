@@ -25,6 +25,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     private TextView startDateDisplay;
     private TextView endDateDisplay;
+    private TextView taskNameDisplay;
     private String taskName;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerStart;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerEnd;
@@ -44,17 +45,18 @@ public class NewTaskActivity extends AppCompatActivity {
         this.context = getApplicationContext();
         super.onCreate(savedInstanceState);
         this.storedTaskManager = new StoredTaskManager();
-        storedTaskManager.removeAllTasks(this.context);
         setContentView(R.layout.activity_newtask);
         intent = getIntent();
         event = intent.getParcelableExtra("event");
-        spinner = findViewById(R.id.typeOfTask_spinner);
         taskModel = new NewTaskModel(this);
-        spinnerItems = taskModel.retrieveSpinnerItems();
+        spinnerItems.add("New");
+        loadSpinneritems();
+        spinner = findViewById(R.id.typeOfTask_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.context, android.R.layout.simple_spinner_item, spinnerItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
+        taskNameDisplay = findViewById(R.id.taskNameEditText);
         startDateDisplay = findViewById(R.id.startDate_textView);
         endDateDisplay = findViewById(R.id.endDate_textView);
         startDateDisplay.setOnClickListener(new View.OnClickListener() {
@@ -266,10 +268,10 @@ public class NewTaskActivity extends AppCompatActivity {
                 Task newTask = new Task(taskName, startTime, endTime, reminderTime);
                 taskModel.saveTask(this, newTask);
                 event.addTask(newTask);
-                taskModel.addTaskToSpinner(newTask);
 
                 if(taskModel.checkSavedTasks(newTask)){
                     storedTaskManager.addTask(this.context, newTask);
+                    spinnerItems.add(newTask.getName());
                     Log.d("ghope04999", "addButtonClicked: Task was saved");
                 }
                 else{
@@ -294,5 +296,113 @@ public class NewTaskActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EventInfoActivity.class);
         setResult (RESULT_CANCELED,intent);
         finish();
+    }
+
+
+    public void getSelectedTask(View view){
+        String taskName = (String) spinner.getSelectedItem();
+        findSelectedTaskData(taskName);
+    }
+
+
+    public void findSelectedTaskData(String taskName){
+
+        if(!taskName.equals("New")){
+
+            ArrayList<Task> tasks = storedTaskManager.getAllTasks(context);
+            int numberOfTasks = tasks.size();
+
+            if(numberOfTasks <= 0){
+                Log.d("ghope04999", "displaySelectedTaskData: NOT GOOOOOOOOD SOMETHING WRONG");
+            }
+
+            Task loadedTask = null;
+            boolean foundTask = false;
+            for(int i = 0; i < numberOfTasks; i++){
+                if(tasks.get(i).getName().equals(taskName)){
+                    loadedTask = tasks.get(i);
+                    foundTask = true;
+                    break;
+                }
+                else{
+                    Log.d("ghope04999", "displaySelectedTaskData: Task was never found");
+                }
+            }
+
+            if(foundTask){
+                displaySelectedTask(loadedTask);
+            }
+            else{
+                Log.d("ghope04999", "displaySelectedTaskData: Unable to find task");
+                Toast.makeText(this, "Unable to find task", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+    public void displaySelectedTask(Task task){
+
+        Duration startDuration = task.getStartDuration();
+        Duration endDuration = task.getEndDuration();
+        int reminderTime = task.getReminderTimeMinutes();
+        int startHour = startDuration.getHour();
+        int startMinute = startDuration.getMinute();
+        int endHour = endDuration.getHour();
+        int endMinute = endDuration.getMinute();
+
+        String startTimeToDisplay;
+        String startMinuteToDisplay;
+        String endTimeToDisplay;
+        String endMinuteToDisplay;
+
+        if(startMinute < 10){
+            startMinuteToDisplay = "0" + startMinute;
+        }
+        else{
+            startMinuteToDisplay = "" + startMinute;
+        }
+
+        if(startHour < 10){
+            startTimeToDisplay = "0" + startHour;
+        }
+        else{
+            startTimeToDisplay = "" + startHour;
+        }
+
+        String time = startTimeToDisplay + ":" + startMinuteToDisplay;
+        startDateDisplay.setText(time);
+
+        if(endMinute < 10){
+            endMinuteToDisplay = "0" + endMinute;
+        }
+        else{
+            endMinuteToDisplay = "" + endMinute;
+        }
+
+        if(endHour < 10){
+            endTimeToDisplay = "0" + endHour;
+        }
+        else{
+            endTimeToDisplay = "" + endHour;
+        }
+
+        String endTime = endTimeToDisplay + ":" + endMinuteToDisplay;
+        endDateDisplay.setText(endTime);
+
+        String taskName = task.getName();
+        taskNameDisplay.setText(taskName);
+    }
+
+
+    public void loadSpinneritems(){
+
+        ArrayList<Task> tasks = storedTaskManager.getAllTasks(context);
+        int numberOfTasks = tasks.size();
+
+        if(numberOfTasks > 0){
+            for(int i = 0; i < numberOfTasks; i++){
+                spinnerItems.add(tasks.get(i).getName());
+            }
+        }
     }
 }
