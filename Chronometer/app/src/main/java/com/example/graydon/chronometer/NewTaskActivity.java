@@ -33,14 +33,21 @@ public class NewTaskActivity extends AppCompatActivity {
     private int startTimeHour = -1, endTimeHour = -1, startTimeMinute = -1, endTimeMinute = -1, reminderTime = -1;
     private NewTaskModel taskModel;
     private StoredTaskManager storedTaskManager;
-    private TimePickerDialog startTimePickerDialog, endTimePickerDialog;
     private Spinner spinner;
     private Context context;
-    private ArrayAdapter<CharSequence> arrayAdapter;
-    private List<String> spinnerItems = new ArrayList<String>();
+    private List<String> spinnerItems = new ArrayList<>();
     private Intent intent;
     private Event event;
 
+
+    /**
+     * In the onCreate method, the event is received from EventInfoActivity. The event is required in this activity so that tasks can be validated before
+     * they are entered into the task. The spinner object is the dropdown menu. Initially it needs a "New" option in case the user
+     * wants to create a new task. The rest of the items in the spinner dropdown are loaded from the loadSpinnerItems method. This
+     * will populate all of the previously saved tasks on the device. The time picker dialog is the time selection tool which
+     * allows the user to choose a start and end time for the task they are creating.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.context = getApplicationContext();
@@ -51,7 +58,7 @@ public class NewTaskActivity extends AppCompatActivity {
         event = intent.getParcelableExtra("event");
         taskModel = new NewTaskModel(this);
         spinnerItems.add("New");
-        loadSpinneritems();
+        loadSpinnerItems();
         spinner = findViewById(R.id.typeOfTask_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.context, android.R.layout.simple_spinner_item, spinnerItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -147,6 +154,10 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Changes the time selector date format into a 24 format for user clarity. If
+     * the hour or minute is less than 10, it will concatenate a zero to enhance GUI.
+     */
     public void displayStartDate(){
         timePickerDialogListenerStart =  new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -176,11 +187,10 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
-    public Event getEvent(){
-        return event;
-    }
-
-
+    /**
+     * Changes the time selector date format into a 24 format for user clarity. If
+     * the hour or minute is less than 10, it will concatenate a zero to enhance GUI.
+     */
     public void displayEndDate(){
         timePickerDialogListenerEnd = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -210,6 +220,10 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Returns a boolean value which checks to see if the user has entered dates into the start and end TextViews.
+     * @return boolean
+     */
     public boolean isValidTimeframe(){
         boolean validTimeframe = false;
 
@@ -227,6 +241,10 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Returns a boolean value which ensures the user has entered a task name.
+     * @return boolean
+     */
     public boolean isValidNameEntered(){
         boolean validNameEntered;
         EditText taskNameEditText = findViewById(R.id.taskNameEditText);
@@ -243,11 +261,15 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Returns a boolean value which ensures the user has entered a valid reminder time value.
+     * @return boolean
+     */
     public boolean isValidReminder(){
         boolean validReminderTime = false;
 
         try{
-            String reminderTimeEntry = (String) editReminderTime.getText().toString();
+            String reminderTimeEntry = editReminderTime.getText().toString();
             reminderTime = Integer.parseInt(reminderTimeEntry);
 
             if(reminderTime > 0){
@@ -266,19 +288,27 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * When the addtask button is clicked, this method is called. This method validates what values the user has entered
+     * into the new task activity. The method calls a helper function to ensure the time frame is valid.
+     * Once the values have been verified, the method will add the task to the event. If the task name has not been
+     * taken before, it will save the task on the device using the stored task manager. Then the newly added task is sent
+     * back to the Event activity so it can be added to the list view of tasks.
+     * @param view
+     */
     public void addButtonClicked(View view){
-        //create new task - need name, hours, minutes, reminder
+
         if(isValidNameEntered() && isValidTimeframe() && isValidReminder()){
             Duration startTime = new Duration(this.startTimeHour, this.startTimeMinute);
             Duration endTime = new Duration(this.endTimeHour, this.endTimeMinute);
 
             if(taskModel.checkTimeFrame(event, startTime, endTime)){
                 Task newTask = new Task(taskName, startTime, endTime, reminderTime);
-                taskModel.saveTask(this, newTask);
                 event.addTask(newTask);
 
                 if(taskModel.checkSavedTasks(newTask)){
                     storedTaskManager.addTask(this.context, newTask);
+                    taskModel.saveTask(this, newTask);
                     spinnerItems.add(newTask.getName());
                     Log.d("ghope04999", "addButtonClicked: Task was saved");
                 }
@@ -300,6 +330,19 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Returns the current event
+     * @return Event
+     */
+    public Event getEvent(){
+        return event;
+    }
+
+
+    /**
+     * Cancels the operation of adding a new task
+     * @param view
+     */
     public void cancelButton (View view){
         Intent intent = new Intent(this, EventInfoActivity.class);
         setResult (RESULT_CANCELED,intent);
@@ -307,12 +350,21 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Sends the user selection from the spinner dropdown menu to the findSelectedTaskData method.
+     * @param view
+     */
     public void getSelectedTask(View view){
         String taskName = (String) spinner.getSelectedItem();
         findSelectedTaskData(taskName);
     }
 
 
+    /**
+     * Iterates through the saved tasks and finds which task has been selected. It then retrieves that specific tasks information
+     * and sends to the displaySelectedTask method.
+     * @param taskName
+     */
     public void findSelectedTaskData(String taskName){
 
         if(!taskName.equals("New")){
@@ -353,8 +405,11 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Organizes the Tasks duration so it can be displayed on the UI.
+     * @param task
+     */
     public void displaySelectedTask(Task task){
-
         Duration startDuration = task.getStartDuration();
         Duration endDuration = task.getEndDuration();
         reminderTime = task.getReminderTimeMinutes();
@@ -411,8 +466,11 @@ public class NewTaskActivity extends AppCompatActivity {
     }
 
 
-    public void loadSpinneritems(){
-
+    /**
+     * Iterates through the saved task list and adds the tasks to the dropdown spinner. This is so the user has
+     * previous tasks available for selection.
+     */
+    public void loadSpinnerItems(){
         ArrayList<Task> tasks = storedTaskManager.getAllTasks(context);
         int numberOfTasks = tasks.size();
 
