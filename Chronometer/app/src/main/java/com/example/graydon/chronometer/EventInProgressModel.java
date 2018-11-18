@@ -133,13 +133,13 @@ public class EventInProgressModel {
         String htmlReport = "";
         String greenHex = "#339966";
         String redHex = "#ff0000";
-        final String header = "<h1><strong>End of Day Report&nbsp;</strong></h1>\n" +
+        String header = "<h1><strong>End of Day Report&nbsp;</strong></h1>\n" +
                 "<h3><strong>-date-</strong></h3>\n";
-        String singleTaskFormat =
+        final String singleTaskFormat =
                 "<ul>\n" +
                 "<li><strong>-task-</strong> was <span style=\"color: -colourhex-;\">-completionstatus-</span> in time.</li>\n" +
                 "</ul>\n";
-        singleTaskFormat = singleTaskFormat.replaceFirst("-date-",getDate());
+        header = header.replaceFirst("-date-",getDate());
 
         final String bottomTag = "<p>created by the Chronometer app available in the Google Play Store.</p>";
 
