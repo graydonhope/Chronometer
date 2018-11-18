@@ -35,7 +35,7 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
     private CountDownTimer timer;
     private static final String EVENT = "Event";
     private static final String TASK = "Current Task: ";
-    private static final int CHRONO_PURPLE = Color.parseColor("#1F1F1F");
+    private static final int CHRONO_BLACK = Color.parseColor("#1F1F1F");
     private static final int CHRONO_GREEN = Color.parseColor("#3ba039");
     private AlarmManager alarmManager;
     private PendingIntent alarmEndPendingIntent;
@@ -53,11 +53,6 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
         timeLeftTextView = findViewById(R.id.timeLeftTextView);
         taskNameTextView = findViewById(R.id.taskNameTextView);
         circularProgressBar = findViewById(R.id.circularProgressBar);
-        String dayOfWeek = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG, Locale.getDefault());
-        String monthOfYear = Calendar.getInstance().getDisplayName(Calendar.MONTH,Calendar.LONG, Locale.getDefault());
-        String dayOfMonth = Integer.toString(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        getSupportActionBar().setTitle(dayOfWeek + " " + monthOfYear + " " + dayOfMonth);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(CHRONO_PURPLE));
         eventOverDialog = new EventOverDialog();
         if(StoredTaskManager.eventIsInProgress(getApplicationContext())){
             event = StoredTaskManager.getCurrentEvent(getApplicationContext());
@@ -73,6 +68,10 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
         if(event == null)
             moveToEventInfoActivity();
         model = new EventInProgressModel(getApplicationContext(),event);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(CHRONO_BLACK));
+        getSupportActionBar().setTitle(model.getDate());
+
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         updateUI();
         createNextTaskTimer();
@@ -134,7 +133,6 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
                 String seconds = Integer.toString((int) (millisUntilFinished / 1000) % 60 );
                 circularProgressBar.setSecondaryProgress( (int) millisUntilFinished);
                 float percentComplete = ( (float) millisUntilFinished/circularProgressBar.getMax())*100;
-                Log.d(TAG,Float.toString(percentComplete) +"/" + Integer.toString(circularProgressBar.getMax()));
                 if (percentComplete <= 20 ){
                     setSecondaryProgressBarColour(Color.RED);
 
@@ -167,13 +165,14 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
                 //Move onto next task
                 circularProgressBar.setSecondaryProgress(0);
                 if (!(model.getEvent().hasNext())){
+                    model.sendReport();
                     timeLeftTextView.setText("00");
                     if(!getSupportFragmentManager().isStateSaved() && !eventOverDialog.isAdded())
                         eventOverDialog.show(getSupportFragmentManager(), "Event Over Dialog");
                     eventIsOver = true;
                 }
                 else{
-                    model.nextTask(false);
+                    model.nextTask(model.getCurrentTask().getIsComplete());
                     updateUI();
                     createNextTaskTimer();
                 }

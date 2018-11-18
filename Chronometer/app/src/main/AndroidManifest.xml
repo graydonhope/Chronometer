@@ -3,6 +3,7 @@
     package="com.example.graydon.chronometer">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -30,7 +31,8 @@
 
         <service android:name=".AlarmAlertService" />
 
-        <activity android:name=".selectedTask"></activity>
+        <activity android:name=".selectedTask" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

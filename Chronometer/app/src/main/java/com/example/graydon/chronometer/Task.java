@@ -32,7 +32,8 @@ public class Task implements Parcelable{
      * @return String
      */
     public String toString (){
-        return name;
+
+        return name + "isCompleted:" + isComplete;
     }
 
 
