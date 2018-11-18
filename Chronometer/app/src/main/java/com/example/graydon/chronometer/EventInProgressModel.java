@@ -99,7 +99,7 @@ public class EventInProgressModel {
         ses.setRegion(Region.getRegion(Regions.US_EAST_1));
 
         // SUBJECT AND BODY
-        Content subject = new Content("Day in Review : Nov. 16.2018");
+        Content subject = new Content("Chronometer: Day In Review");
         String bodyHtml = createReportHtml(event.getTasks());
         Content bodyContent = new Content().withData(bodyHtml);
         Body body = new Body().withHtml(bodyContent);
