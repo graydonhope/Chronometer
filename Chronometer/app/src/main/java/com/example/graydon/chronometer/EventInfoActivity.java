@@ -1,23 +1,23 @@
 package com.example.graydon.chronometer;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ListView;
-import android.widget.ListAdapter;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-
-import com.example.graydon.chronometer.R;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -25,17 +25,20 @@ import java.util.ArrayList;
 
 
 public class EventInfoActivity extends AppCompatActivity {
-   ListView listview;
-   TextView taskView;
-   Event event;
+    private static final int CHRONO_BLACK = Color.parseColor("#1F1F1F");
+    ListView listview;
+    TextView taskView;
+    Event event;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //ADDED BY SANTOS - If there is an event in progress, it will take the user to the event in progress screen right away
         if (StoredTaskManager.eventIsInProgress(getApplicationContext()))
             moveToEventInProgressActivity();
 
         setContentView(R.layout.activity_event_info);
+        //changes the app bar menu to black
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(CHRONO_BLACK));
+
         taskView=findViewById(R.id.taskview);
         listview=findViewById(R.id.eventList);
         event=new Event ();
@@ -51,6 +54,37 @@ public class EventInfoActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Makes settings icon visible
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.info_appbar,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //Called when an app bar icon is selected
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_settings:
+                Log.d("SGAGB074", "Settings button was clicked" + item.getItemId());
+                moveToSettings();
+                break;
+            default :
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * changes activites from the info to the settings
+     */
+    private void moveToSettings() {
+        Intent moveToSettingsActivity = new Intent(this,SettingsActivity.class);
+        startActivity(moveToSettingsActivity);
+    }
+
+
     public void addButtonClick (View view){
         Intent intent =new Intent (this,NewTaskActivity.class);
         intent.putExtra ("event",event);

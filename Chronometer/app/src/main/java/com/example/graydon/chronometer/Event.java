@@ -109,6 +109,10 @@ public class Event implements Parcelable{
 	 * @return the next task to be compeleted
 	 */
 	public Task nextTask (boolean currentTaskIsComplete) {
+		if (currentTaskIndex != -1){
+			tasks.get(currentTaskIndex).setIsComplete(currentTaskIsComplete);
+
+		}
 		currentTaskIndex++;
 		if(currentTaskIndex >= tasks.size()){
 			throw new IndexOutOfBoundsException("No more tasks.");
