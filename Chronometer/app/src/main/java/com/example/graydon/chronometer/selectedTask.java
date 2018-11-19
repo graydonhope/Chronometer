@@ -50,6 +50,7 @@ public class selectedTask extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                //Checks to see which activity the deletion request is coming from.
                 if(!fromEditTask){
                     Intent intent =new Intent ();
                     intent.putExtra("pos",position);
