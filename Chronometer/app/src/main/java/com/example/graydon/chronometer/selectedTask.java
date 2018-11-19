@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class selectedTask extends AppCompatActivity {
+    private static final int CHRONO_BLACK = Color.parseColor("#1F1F1F");
     private Task task;
     TextView taskName;
     TextView taskStartDur;
@@ -26,6 +29,8 @@ public class selectedTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_task);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(CHRONO_BLACK));
+        getSupportActionBar().setTitle("Selected Task");
         taskName=findViewById(R.id.taskName);
         taskStartDur=findViewById(R.id.startDur);
         taskEndDur=findViewById(R.id.endDur);

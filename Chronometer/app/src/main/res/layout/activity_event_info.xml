@@ -71,6 +71,7 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:textColor="#FCFCFC"
+        android:fastScrollEnabled="true"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 

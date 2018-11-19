@@ -16,72 +16,73 @@
 
         <LinearLayout
             android:id="@+id/labelLayout"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2.8"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/NameLabel"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Task Name:"
+                android:text="Task:"
                 android:maxLines="1"
                 android:textColor="#FFFFFF"
-                android:textSize="16dp"
+                android:textSize="10dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/startTimeLabel"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="StartDuration:"
+                android:text="Start:"
                 android:textColor="#FFFFFF"
-                android:textSize="15.5dp"
+                android:textSize="10dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/endTimeLabel"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="End Duration:"
+                android:text="End:"
                 android:textColor="#FFFFFF"
-                android:textSize="16dp"
+                android:textSize="10dp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/taskName"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:maxLines="1"
-                android:textSize="16dp" />
+                android:textSize="10dp"/>
 
             <TextView
                 android:id="@+id/startDur"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:maxLines="1"
-                android:textSize="16dp" />
+                android:textSize="10dp"
+                      />
 
             <TextView
                 android:id="@+id/endDur"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:maxLines="1"
-                android:textSize="16dp" />
+                android:textSize="10dp" />
 
         </LinearLayout>
 
@@ -89,8 +90,8 @@
 
     <Button
         android:id="@+id/delButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="81dp"
+        android:layout_height="31dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -99,12 +100,12 @@
         android:onClick="deleteTask"
         android:text="Delete"
         android:textColor="#f44842"
-        android:textSize="17dp"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.252" />
+        app:layout_constraintVertical_bias="0.4" />
+
 
 </android.support.constraint.ConstraintLayout>
