@@ -92,7 +92,11 @@ public class EventInProgressModel {
         final String to = sharedPreferences.getString("UserEmail",null);
         if(to == null) {return;}
         if (!shouldSend){return;}
-        AWSCredentials credentialsProvider = new BasicAWSCredentials("AKIAJISGBHJ7FEVVTEWQ","GglpdM7mOBp/2NIHlm/6X9JM7zwCWqFBkL2Ropqc");
+        String accessKey = BuildConfig.AccessKey;
+        String secretKey = BuildConfig.SecretKey;
+        Log.d("SGAGB074",accessKey);
+        Log.d("SGAGB074", secretKey);
+        AWSCredentials credentialsProvider = new BasicAWSCredentials(accessKey,secretKey);
 
         // CREATES SES CLIENT TO MANAGE SENDING EMAIL
         final AmazonSimpleEmailServiceClient ses = new AmazonSimpleEmailServiceClient(credentialsProvider);
