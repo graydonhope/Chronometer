@@ -31,6 +31,7 @@ public class NewTaskActivity extends AppCompatActivity {
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerStart;
     private TimePickerDialog.OnTimeSetListener timePickerDialogListenerEnd;
     private int startTimeHour = -1, endTimeHour = -1, startTimeMinute = -1, endTimeMinute = -1, reminderTime = -1;
+    private static final int CHRONO_BLACK = Color.parseColor("#1F1F1F");
     private NewTaskModel taskModel;
     private StoredTaskManager storedTaskManager;
     private Spinner spinner;
@@ -54,6 +55,7 @@ public class NewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.storedTaskManager = new StoredTaskManager();
         setContentView(R.layout.activity_newtask);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(CHRONO_BLACK));
         intent = getIntent();
         event = intent.getParcelableExtra("event");
         taskModel = new NewTaskModel(this);
