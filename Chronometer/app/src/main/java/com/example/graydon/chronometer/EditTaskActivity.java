@@ -29,23 +29,23 @@ public class EditTaskActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, savedItems);
         listView.setAdapter(adapter);
 
-        /*
-        To be implemented in next version. This will allow user to delete a single task - Graydon
+
+        //To be implemented in next version. This will allow user to delete a single task - Graydon
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Task selectedTask = storedTaskManager.getTask(CONTEXT, position);
                 String nameAtClickLocation = savedItems.get(position);
-                Intent intent = new Intent (EditTaskActivity.this, SelectedSavedTask.class);
-                intent.putExtra ("selectedSavedTask", selectedTask);
+                Intent intent = new Intent (EditTaskActivity.this, selectedTask.class);
+                intent.putExtra ("selectedTask", selectedTask);
                 intent.putExtra("position",position);
+                intent.putExtra("fromEditTask", true);
                 startActivityForResult(intent,1);
+                savedItems.remove(nameAtClickLocation);
+                adapter.notifyDataSetChanged();
             }
         });
-
-        */
-
     }
 
 
