@@ -5,11 +5,13 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -66,6 +68,26 @@ public class NewTaskActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
+        setTitle("Add a New Task");
+
+        //Changing color of spinner arrow
+        int background_light = 17170447;
+        spinner.getBackground().setColorFilter(getResources().getColor(background_light), PorterDuff.Mode.SRC_ATOP);
+
+        //Setting on item selected listener for spinner items
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                findSelectedTaskData(selectedItem);
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //Do nothing
+            }
+        });
         taskNameDisplay = findViewById(R.id.taskNameEditText);
         editReminderTime = findViewById(R.id.editReminderTime);
         startDateDisplay = findViewById(R.id.startDate_textView);
