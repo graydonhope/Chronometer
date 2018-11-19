@@ -38,7 +38,7 @@ public class EventInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_info);
         //changes the app bar menu to black
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(CHRONO_BLACK));
-
+        setTitle("Daily Tasks");
         taskView=findViewById(R.id.taskview);
         listview=findViewById(R.id.eventList);
         event=new Event ();

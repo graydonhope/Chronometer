@@ -5,11 +5,13 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -66,6 +68,26 @@ public class NewTaskActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
+        setTitle("Add a New Task");
+
+        //Changing color of spinner arrow
+        int background_light = 17170447;
+        spinner.getBackground().setColorFilter(getResources().getColor(background_light), PorterDuff.Mode.SRC_ATOP);
+
+        //Setting on item selected listener for spinner items
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                findSelectedTaskData(selectedItem);
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //Do nothing
+            }
+        });
         taskNameDisplay = findViewById(R.id.taskNameEditText);
         editReminderTime = findViewById(R.id.editReminderTime);
         startDateDisplay = findViewById(R.id.startDate_textView);
@@ -109,6 +131,8 @@ public class NewTaskActivity extends AppCompatActivity {
                 startTimeMinute = minute;
                 String startTimeToDisplay;
                 String minuteToDisplay;
+                String time;
+
 
                 if(minute < 10){
                     minuteToDisplay = "0" + minute;
@@ -117,13 +141,24 @@ public class NewTaskActivity extends AppCompatActivity {
                     minuteToDisplay = "" + minute;
                 }
 
-                if(hourOfDay < 10){
-                    startTimeToDisplay = "0" + hourOfDay;
+                startTimeToDisplay = "" + hourOfDay;
+
+                if(hourOfDay < 12){
+                    if(hourOfDay == 0){
+                        time = "12" + ":" + minuteToDisplay + " AM";
+                    }
+                    else{
+                        time = startTimeToDisplay + ":" + minuteToDisplay + " AM";
+                    }
                 }
                 else{
-                    startTimeToDisplay = "" + hourOfDay;
+                    if(hourOfDay == 12){
+                        time = "12" + ":" + minuteToDisplay + " PM";
+                    }
+                    else{
+                        time = "" + (hourOfDay - 12) + ":" + minuteToDisplay + " PM";
+                    }
                 }
-                String time = startTimeToDisplay + ":" + minuteToDisplay;
                 startDateDisplay.setText(time);
             }
         };
@@ -135,6 +170,8 @@ public class NewTaskActivity extends AppCompatActivity {
                 endTimeMinute = minute;
                 String endTimeToDisplay;
                 String minuteToDisplay;
+                String time;
+
 
                 if(minute < 10){
                     minuteToDisplay = "0" + minute;
@@ -143,13 +180,24 @@ public class NewTaskActivity extends AppCompatActivity {
                     minuteToDisplay = "" + minute;
                 }
 
-                if(hourOfDay < 10){
-                    endTimeToDisplay = "0" + hourOfDay;
+                endTimeToDisplay = "" + hourOfDay;
+
+                if(hourOfDay < 12){
+                    if(hourOfDay == 0){
+                        time = "12" + ":" + minuteToDisplay + " AM";
+                    }
+                    else{
+                        time = endTimeToDisplay + ":" + minuteToDisplay + " AM";
+                    }
                 }
                 else{
-                    endTimeToDisplay = "" + hourOfDay;
+                    if(hourOfDay == 12){
+                        time = "12" + ":" + minuteToDisplay + " PM";
+                    }
+                    else{
+                        time = "" + (hourOfDay - 12) + ":" + minuteToDisplay + " PM";
+                    }
                 }
-                String time = endTimeToDisplay + ":" + minuteToDisplay;
                 endDateDisplay.setText(time);
             }
         };
@@ -168,6 +216,8 @@ public class NewTaskActivity extends AppCompatActivity {
                 startTimeMinute = minute;
                 String startTimeToDisplay;
                 String minuteToDisplay;
+                String time;
+
 
                 if(minute < 10){
                     minuteToDisplay = "0" + minute;
@@ -176,13 +226,24 @@ public class NewTaskActivity extends AppCompatActivity {
                     minuteToDisplay = "" + minute;
                 }
 
-                if(hourOfDay < 10){
-                    startTimeToDisplay = "0" + hourOfDay;
+                startTimeToDisplay = "" + hourOfDay;
+
+                if(hourOfDay < 12){
+                    if(hourOfDay == 0){
+                        time = "12" + ":" + minuteToDisplay + " AM";
+                    }
+                    else{
+                        time = startTimeToDisplay + ":" + minuteToDisplay + " AM";
+                    }
                 }
                 else{
-                    startTimeToDisplay = "" + hourOfDay;
+                    if(hourOfDay == 12){
+                        time = "12" + ":" + minuteToDisplay + " PM";
+                    }
+                    else{
+                        time = "" + (hourOfDay - 12) + ":" + minuteToDisplay + " PM";
+                    }
                 }
-                String time = startTimeToDisplay + ":" + minuteToDisplay;
                 startDateDisplay.setText(time);
             }
         };
@@ -201,6 +262,8 @@ public class NewTaskActivity extends AppCompatActivity {
                 endTimeMinute = minute;
                 String endTimeToDisplay;
                 String minuteToDisplay;
+                String time;
+
 
                 if(minute < 10){
                     minuteToDisplay = "0" + minute;
@@ -209,13 +272,24 @@ public class NewTaskActivity extends AppCompatActivity {
                     minuteToDisplay = "" + minute;
                 }
 
-                if(hourOfDay < 10){
-                    endTimeToDisplay = "0" + hourOfDay;
+                endTimeToDisplay = "" + hourOfDay;
+
+                if(hourOfDay < 12){
+                    if(hourOfDay == 0){
+                        time = "12" + ":" + minuteToDisplay + " AM";
+                    }
+                    else{
+                        time = endTimeToDisplay + ":" + minuteToDisplay + " AM";
+                    }
                 }
                 else{
-                    endTimeToDisplay = "" + hourOfDay;
+                    if(hourOfDay == 12){
+                        time = "12" + ":" + minuteToDisplay + " PM";
+                    }
+                    else{
+                        time = "" + (hourOfDay - 12) + ":" + minuteToDisplay + " PM";
+                    }
                 }
-                String time = endTimeToDisplay + ":" + minuteToDisplay;
                 endDateDisplay.setText(time);
             }
         };
@@ -414,56 +488,67 @@ public class NewTaskActivity extends AppCompatActivity {
         Duration startDuration = task.getStartDuration();
         Duration endDuration = task.getEndDuration();
         reminderTime = task.getReminderTimeMinutes();
-        Log.d("ghope04999", "displaySelectedTask: Reminder time from loaded task: " + reminderTime);
-        startTimeHour = startDuration.getHour();
-        startTimeMinute = startDuration.getMinute();
         endTimeHour = endDuration.getHour();
         endTimeMinute = endDuration.getMinute();
-
-        String startTimeToDisplay;
-        String startMinuteToDisplay;
+        startTimeHour = startDuration.getHour();
+        startTimeMinute = startDuration.getMinute();
         String endTimeToDisplay;
-        String endMinuteToDisplay;
+        String startTimeToDisplay;
+        String minuteToDisplay;
+        String startTime;
+        String endTime;
 
         if(startTimeMinute < 10){
-            startMinuteToDisplay = "0" + startTimeMinute;
+            minuteToDisplay = "0" + startTimeMinute;
         }
         else{
-            startMinuteToDisplay = "" + startTimeMinute;
+            minuteToDisplay = "" + startTimeMinute;
         }
+        startTimeToDisplay = "" + startTimeHour;
 
-        if(startTimeHour < 10){
-            startTimeToDisplay = "0" + startTimeHour;
+        if(startTimeHour < 12){
+            if(startTimeHour == 0){
+                startTime = "12" + ":" + minuteToDisplay + " AM";
+            }
+            else{
+                startTime = startTimeToDisplay + ":" + minuteToDisplay + " AM";
+            }
         }
         else{
-            startTimeToDisplay = "" + startTimeHour;
+            if(startTimeHour == 12){
+                startTime = "12" + ":" + minuteToDisplay + " PM";
+            }
+            else{
+                startTime = "" + (startTimeHour - 12) + ":" + minuteToDisplay + " PM";
+            }
         }
-
-        String time = startTimeToDisplay + ":" + startMinuteToDisplay;
-        startDateDisplay.setText(time);
+        startDateDisplay.setText(startTime);
 
         if(endTimeMinute < 10){
-            endMinuteToDisplay = "0" + endTimeMinute;
+            minuteToDisplay = "0" + endTimeMinute;
         }
         else{
-            endMinuteToDisplay = "" + endTimeMinute;
+            minuteToDisplay = "" + endTimeMinute;
         }
+        endTimeToDisplay = "" + endTimeHour;
 
-        if(endTimeHour < 10){
-            endTimeToDisplay = "0" + endTimeHour;
+        if(endTimeHour < 12){
+            if(endTimeHour == 0){
+                endTime = "12" + ":" + minuteToDisplay + " AM";
+            }
+            else{
+                endTime = endTimeToDisplay + ":" + minuteToDisplay + " AM";
+            }
         }
         else{
-            endTimeToDisplay = "" + endTimeHour;
+            if(endTimeHour == 12){
+                endTime = "12" + ":" + minuteToDisplay + " PM";
+            }
+            else{
+                endTime = "" + (endTimeHour - 12) + ":" + minuteToDisplay + " PM";
+            }
         }
-
-        String endTime = endTimeToDisplay + ":" + endMinuteToDisplay;
         endDateDisplay.setText(endTime);
-
-        String taskName = task.getName();
-        taskNameDisplay.setText(taskName);
-
-        String stringReminderTime = Integer.toString(reminderTime);
-        editReminderTime.setText(stringReminderTime);
     }
 
 

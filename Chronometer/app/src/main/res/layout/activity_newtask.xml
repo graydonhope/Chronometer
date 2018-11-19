@@ -9,6 +9,7 @@
     tools:layout_editor_absoluteY="50dp"
     >
 
+
     <TextView
         android:id="@+id/type_textView"
         android:layout_width="126dp"
@@ -69,6 +70,7 @@
         android:layout_height="39dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:imeOptions="actionDone"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="#FFFFFF"
@@ -220,25 +222,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.467" />
-
-    <Button
-        android:id="@+id/button_loadTask"
-        android:layout_width="68dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/background_light"
-        android:onClick="getSelectedTask"
-        android:text="Load SelectedTask"
-        android:textSize="8sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.803"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.079" />
 
     <EditText
         android:id="@+id/editReminderTime"
