@@ -485,70 +485,81 @@ public class NewTaskActivity extends AppCompatActivity {
      * @param task
      */
     public void displaySelectedTask(Task task){
-        Duration startDuration = task.getStartDuration();
-        Duration endDuration = task.getEndDuration();
-        reminderTime = task.getReminderTimeMinutes();
-        endTimeHour = endDuration.getHour();
-        endTimeMinute = endDuration.getMinute();
-        startTimeHour = startDuration.getHour();
-        startTimeMinute = startDuration.getMinute();
-        String endTimeToDisplay;
-        String startTimeToDisplay;
-        String minuteToDisplay;
-        String startTime;
-        String endTime;
 
-        if(startTimeMinute < 10){
-            minuteToDisplay = "0" + startTimeMinute;
+        if(task == null){
+            throw new IllegalArgumentException("Task cannot be null");
         }
         else{
-            minuteToDisplay = "" + startTimeMinute;
-        }
-        startTimeToDisplay = "" + startTimeHour;
+            Duration startDuration = task.getStartDuration();
+            Duration endDuration = task.getEndDuration();
+            String taskName = task.getName();
+            Log.d("ghope04999", "displaySelectedTask: Task Name; " + taskName);
+            int reminderTime = task.getReminderTimeMinutes();
+            Log.d("ghope04999", "displaySelectedTask: Reminder time: " + reminderTime);
+            endTimeHour = endDuration.getHour();
+            endTimeMinute = endDuration.getMinute();
+            startTimeHour = startDuration.getHour();
+            startTimeMinute = startDuration.getMinute();
+            String endTimeToDisplay;
+            String startTimeToDisplay;
+            String minuteToDisplay;
+            String startTime;
+            String endTime;
+            editReminderTime.setText(Integer.toString(reminderTime));
+            taskNameDisplay.setText(taskName);
 
-        if(startTimeHour < 12){
-            if(startTimeHour == 0){
-                startTime = "12" + ":" + minuteToDisplay + " AM";
+            if(startTimeMinute < 10){
+                minuteToDisplay = "0" + startTimeMinute;
             }
             else{
-                startTime = startTimeToDisplay + ":" + minuteToDisplay + " AM";
+                minuteToDisplay = "" + startTimeMinute;
             }
-        }
-        else{
-            if(startTimeHour == 12){
-                startTime = "12" + ":" + minuteToDisplay + " PM";
-            }
-            else{
-                startTime = "" + (startTimeHour - 12) + ":" + minuteToDisplay + " PM";
-            }
-        }
-        startDateDisplay.setText(startTime);
+            startTimeToDisplay = "" + startTimeHour;
 
-        if(endTimeMinute < 10){
-            minuteToDisplay = "0" + endTimeMinute;
-        }
-        else{
-            minuteToDisplay = "" + endTimeMinute;
-        }
-        endTimeToDisplay = "" + endTimeHour;
+            if(startTimeHour < 12){
+                if(startTimeHour == 0){
+                    startTime = "12" + ":" + minuteToDisplay + " AM";
+                }
+                else{
+                    startTime = startTimeToDisplay + ":" + minuteToDisplay + " AM";
+                }
+            }
+            else{
+                if(startTimeHour == 12){
+                    startTime = "12" + ":" + minuteToDisplay + " PM";
+                }
+                else{
+                    startTime = "" + (startTimeHour - 12) + ":" + minuteToDisplay + " PM";
+                }
+            }
+            startDateDisplay.setText(startTime);
 
-        if(endTimeHour < 12){
-            if(endTimeHour == 0){
-                endTime = "12" + ":" + minuteToDisplay + " AM";
+            if(endTimeMinute < 10){
+                minuteToDisplay = "0" + endTimeMinute;
             }
             else{
-                endTime = endTimeToDisplay + ":" + minuteToDisplay + " AM";
+                minuteToDisplay = "" + endTimeMinute;
             }
-        }
-        else{
-            if(endTimeHour == 12){
-                endTime = "12" + ":" + minuteToDisplay + " PM";
+            endTimeToDisplay = "" + endTimeHour;
+
+            if(endTimeHour < 12){
+                if(endTimeHour == 0){
+                    endTime = "12" + ":" + minuteToDisplay + " AM";
+                }
+                else{
+                    endTime = endTimeToDisplay + ":" + minuteToDisplay + " AM";
+                }
             }
             else{
-                endTime = "" + (endTimeHour - 12) + ":" + minuteToDisplay + " PM";
+                if(endTimeHour == 12){
+                    endTime = "12" + ":" + minuteToDisplay + " PM";
+                }
+                else{
+                    endTime = "" + (endTimeHour - 12) + ":" + minuteToDisplay + " PM";
+                }
             }
+            endDateDisplay.setText(endTime);
         }
-        endDateDisplay.setText(endTime);
     }
 
 
