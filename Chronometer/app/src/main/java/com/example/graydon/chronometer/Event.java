@@ -145,6 +145,31 @@ public class Event implements Parcelable{
 		dest.writeTypedList(tasks);
 		dest.writeInt(currentTaskIndex);
 	}
+	public void sort (){
+		if (tasks.isEmpty()||tasks.size()==1){
+			return;
+		}
+		for (int i=1;i<tasks.size();i++){
+			Task tmp= tasks.get (i);
+			for (int j=i;j>=0;j--){
+				Task other=tasks.get (j);
+				if (tmp.getStartHour()<other.getStartHour()) {
+					tasks.remove(i);
+					tasks.add(j,tmp);
+					break;
+				}
+				//TODO
+				//uncomment the bottom code once the same hour but different minutes is allowed and test
+//				else if (tmp.getStartHour()==other.getStartHour()){
+//					if (tmp.getStartMinute()<other.getStartMinute()){
+//						tasks.remove(i);
+//						tasks.add(j,tmp);
+//						break;
+//					}
+//				}
+			}
+		}
+	}
 
 	/**
 	 * A string representation of an event
