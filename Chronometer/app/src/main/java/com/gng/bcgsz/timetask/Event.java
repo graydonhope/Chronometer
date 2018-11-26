@@ -89,6 +89,7 @@ public class Event implements Parcelable{
 		return tasks.get(index);
 	}
 	public ArrayList <Task> getTasks(){
+		sort();
 		return tasks;
 	}
 

@@ -219,47 +219,6 @@ public class EventInfoProgressActivity extends AppCompatActivity implements EndO
         alarmManager.setExact(AlarmManager.RTC_WAKEUP,model.getCurrentTaskEndTime().getTimeInMillis() - model.getCurrentTaskReminderTimeInMili(),alarmReminderPendingIntent);
     }
 
-    /**
-     *  Simualtes the event that will be passed to this activity from event info activity
-     * @return event made
-     */
-
-    public Event createEvent(){
-
-        Duration dur1 = new Duration(0,0);
-        Duration dur2 = new Duration(4,0);
-        Task task1 = new Task("Stock produce", dur1,dur2, 1);
-
-        Duration dur3 = new Duration(4,0);
-        Duration dur4 = new Duration(8,0);
-        Task task2 = new Task("Unload Delivery", dur3,dur4, 15);
-
-        Duration dur5 = new Duration(8,0);
-        Duration dur6 = new Duration(12,0);
-        Task task3 = new Task("Stock Toys", dur5,dur6, 15);
-
-        Duration dur7 = new Duration(12,0);
-        Duration dur8 = new Duration(16,0);
-        Task task4 = new Task("Stock Bed & Bath", dur7,dur8, 15);
-
-        Duration dur9 = new Duration(16,0);
-        Duration dur10 = new Duration(20,0);
-        Task task5 = new Task("Stock Seasonal", dur7,dur8, 15);
-
-        Duration dur11 = new Duration(20,0);
-        Duration dur12 = new Duration(23,59);
-        Task task6 = new Task("Stock Bed & Bath", dur11,dur12, 15);
-
-        Event event = new Event();
-        event.addTask(task1);
-        event.addTask(task2);
-        event.addTask(task3);
-        event.addTask(task4);
-        event.addTask(task5);
-        event.addTask(task6);
-        return event;
-    }
-
     @Override
     protected void onResume() {
         super.onResume();

@@ -18,7 +18,7 @@ public class EventOverDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstance){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("No More Tasks");
-        builder.setMessage("There are no more tasks for your to complete");
+        builder.setMessage("There are no more tasks for you to complete");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
