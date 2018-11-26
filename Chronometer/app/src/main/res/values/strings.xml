@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Chronometer</string>
+    <string name="app_name">Time Task</string>
     <string name="Edit_Saved_Tasks">Edit Saved Tasks</string>
     <string-array name="spinnerItems">
         <item>New</item>

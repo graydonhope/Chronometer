@@ -5,12 +5,13 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class AlarmReceiver extends BroadcastReceiver {
-    private final static String CHRONOMETER = "chronometer";
+    private final static String CHRONOMETER = "Time Task";
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -34,6 +35,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
        NotificationCompat.Builder notificationBuilder =  new NotificationCompat.Builder(context, App.CHANNEL_ID)
                .setContentTitle(title)
+               .setSmallIcon(R.mipmap.ic_chrono_launcher)
+               .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
+                       R.mipmap.ic_chrono_launcher))
                .setContentText(message)
                .setTicker(alert)
                .setSmallIcon(R.mipmap.ic_launcher)
@@ -43,6 +47,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                .setDefaults(NotificationCompat.DEFAULT_SOUND)
                .setDefaults(NotificationCompat.DEFAULT_VIBRATE)
                .setSound(Settings.System.DEFAULT_ALARM_ALERT_URI);
+
 
 
        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
