@@ -11,9 +11,16 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField 'String', "AccessKey", AccessKey
+            buildConfigField 'String', "SecretKey", SecretKey
+
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "AccessKey", AccessKey
+            buildConfigField 'String', "SecretKey", SecretKey
         }
     }
 }
@@ -28,7 +35,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     implementation 'net.danlew:android.joda:2.10.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.amazonaws:aws-android-sdk-core:2.2.13'
-    implementation 'com.amazonaws:aws-android-sdk-cognito:2.2.13'
-    implementation 'com.amazonaws:aws-android-sdk-ses:2.2.13'
+    implementation 'com.amazonaws:aws-android-sdk-core:2.8.2'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.8.2'
+    implementation 'com.amazonaws:aws-android-sdk-ses:2.8.2'
 }

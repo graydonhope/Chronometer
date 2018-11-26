@@ -60,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void saveEmail() {
         SharedPreferences sharedPreferences = getSharedPreferences("UserSettings", Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString("UserEmail",emailField.getText().toString());
+        sharedPreferencesEditor.putString("UserEmail",emailField.getText().toString().trim().toLowerCase());
         sharedPreferencesEditor.apply();
     }
 
