@@ -1,4 +1,4 @@
-package com.example.graydon.chronometer;
+package com.gng.bcgsz.timetask;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,12 +7,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 public class SettingsActivity extends AppCompatActivity {
     private static final int CHRONO_BLACK = Color.parseColor("#1F1F1F");

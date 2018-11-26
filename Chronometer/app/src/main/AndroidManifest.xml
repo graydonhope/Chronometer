@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.graydon.chronometer">
+    package="com.gng.bcgsz.timetask">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".App"
+        android:name="com.gng.bcgsz.timetask.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_chrono_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_chrono_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EventInfoActivity">
+        <activity android:name="com.gng.bcgsz.timetask.EventInfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewTaskActivity" />
-        <activity android:name=".EventInfoProgressActivity" />
+        <activity android:name="com.gng.bcgsz.timetask.NewTaskActivity" />
+        <activity android:name="com.gng.bcgsz.timetask.EventInfoProgressActivity" />
 
-        <receiver android:name=".AlarmReceiver" />
+        <receiver android:name="com.gng.bcgsz.timetask.AlarmReceiver" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <service android:name=".AlarmAlertService" />
+        <service android:name="com.gng.bcgsz.timetask.AlarmAlertService" />
 
-        <activity android:name=".selectedTask" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name="com.gng.bcgsz.timetask.selectedTask" />
+        <activity android:name="com.gng.bcgsz.timetask.SettingsActivity" />
         <activity
-            android:name=".EditTaskActivity"
+            android:name="com.gng.bcgsz.timetask.EditTaskActivity"
             android:label="@string/title_activity_edit_task"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

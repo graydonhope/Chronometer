@@ -37,7 +37,7 @@
         android:background="@drawable/circle_add_button"
         android:onClick="addButtonClick"
         android:text="+"
-        android:textSize="35dp"
+        android:textSize="30dp"
         android:contentDescription="add a task"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +58,7 @@
         android:background="@drawable/rectangular_round"
         android:onClick="startButtonClick"
         android:text="Start Day"
-        android:textSize="25dp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.034"
@@ -70,8 +70,8 @@
         android:id="@+id/eventList"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:textColor="#FCFCFC"
         android:fastScrollEnabled="true"
+        android:textColor="#FCFCFC"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 

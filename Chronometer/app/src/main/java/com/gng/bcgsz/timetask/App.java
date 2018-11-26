@@ -1,11 +1,8 @@
-package com.example.graydon.chronometer;
+package com.gng.bcgsz.timetask;
 
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 

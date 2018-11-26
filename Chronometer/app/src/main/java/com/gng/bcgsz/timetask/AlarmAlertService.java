@@ -1,4 +1,4 @@
-package com.example.graydon.chronometer;
+package com.gng.bcgsz.timetask;
 
 import android.app.Service;
 import android.content.Context;

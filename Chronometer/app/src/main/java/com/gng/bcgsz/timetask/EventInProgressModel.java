@@ -1,9 +1,8 @@
-package com.example.graydon.chronometer;
+package com.gng.bcgsz.timetask;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -103,7 +102,7 @@ public class EventInProgressModel {
         ses.setRegion(Region.getRegion(Regions.US_EAST_1));
 
         // SUBJECT AND BODY
-        Content subject = new Content("Chronometer: Day In Review");
+        Content subject = new Content("Time Task: Day In Review");
         String bodyHtml = createReportHtml(event.getTasks());
         Content bodyContent = new Content().withData(bodyHtml);
         Body body = new Body().withHtml(bodyContent);
@@ -145,7 +144,7 @@ public class EventInProgressModel {
                 "</ul>\n";
         header = header.replaceFirst("-date-",getDate());
 
-        final String bottomTag = "<p>created by the Chronometer app available in the Google Play Store.</p>";
+        final String bottomTag = "<p>created by the Time Task app available in the Google Play Store.</p>";
 
 
         for(int i = 0; i < tasks.size(); i++){

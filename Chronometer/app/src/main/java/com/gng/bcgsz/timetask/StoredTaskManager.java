@@ -1,10 +1,9 @@
-package com.example.graydon.chronometer;
+package com.gng.bcgsz.timetask;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.graydon.chronometer.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;

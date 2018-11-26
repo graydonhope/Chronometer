@@ -1,11 +1,8 @@
-package com.example.graydon.chronometer;
+package com.gng.bcgsz.timetask;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class Event implements Parcelable{
 	private ArrayList<Task> tasks ;

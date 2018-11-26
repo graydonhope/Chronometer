@@ -1,4 +1,4 @@
-package com.example.graydon.chronometer;
+package com.gng.bcgsz.timetask;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,7 +13,6 @@ import android.view.View;
 import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
