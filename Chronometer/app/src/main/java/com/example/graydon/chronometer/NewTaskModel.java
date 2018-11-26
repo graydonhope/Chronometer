@@ -156,8 +156,6 @@ public class NewTaskModel extends AppCompatActivity{
                             Log.d("ghope04999", "checkTimeFrame: Time overlap");
                         }
 
-
-
                         /*
 
                         if(currentStartTimeHour == -1 && currentStartTimeMinute == -1 && currentEndTimeHour == -1 && currentEndTimeMinute == -1){
