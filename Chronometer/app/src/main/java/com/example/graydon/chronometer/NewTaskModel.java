@@ -3,8 +3,18 @@ package com.example.graydon.chronometer;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.LocalDateTime;
+import org.joda.time.base.AbstractInterval;
+
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+
 
 public class NewTaskModel extends AppCompatActivity{
 
@@ -117,10 +127,18 @@ public class NewTaskModel extends AppCompatActivity{
                 }
                 else{
                     taskListSize = tasks.size();
+
                     this.currentStartTimeHour   = startDuration.getHour();
                     this.currentEndTimeHour     = endDuration.getHour();
                     this.currentStartTimeMinute = startDuration.getMinute();
                     this.currentEndTimeMinute   = endDuration.getMinute();
+                    LocalDateTime localDateTime = new LocalDateTime();
+                    Calendar startTime = Calendar.getInstance();
+                    Calendar endTime = Calendar.getInstance();
+                    startTime.set(2018, 1,1, this.currentStartTimeHour, this.currentStartTimeMinute);
+                    endTime.set(2018,1,1, this.currentEndTimeHour, this.currentEndTimeMinute);
+
+
                     for(int i = 0; i < taskListSize; i++){
                         Task taskAtIteration = tasks.get(i);
                         int startHour   = taskAtIteration.getStartHour();
@@ -128,29 +146,58 @@ public class NewTaskModel extends AppCompatActivity{
                         int startMinute = taskAtIteration.getStartMinute();
                         int endMinute   = taskAtIteration.getEndMinute();
 
+                        Calendar startCheck = Calendar.getInstance();
+                        Calendar endCheck = Calendar.getInstance();
+                        startCheck.set(2018, 1, 1, startHour, startMinute);
+                        endCheck.set(2018,1,1, endHour, endMinute);
+
+                        if((startTime.before(endCheck)) && (startCheck.before(endTime))){
+                            validTime = false;
+                            Log.d("ghope04999", "checkTimeFrame: Time overlap");
+                        }
+
+
+
+                        /*
+
                         if(currentStartTimeHour == -1 && currentStartTimeMinute == -1 && currentEndTimeHour == -1 && currentEndTimeMinute == -1){
                             validTime = false;
+                            Log.d("ghope04999", "checkTimeFrame: Case1" + validTime);
                         }
 
                         if((currentStartTimeHour < startHour) && (currentEndTimeHour > endHour)){
                             validTime = false;
+                            Log.d("ghope04999", "checkTimeFrame: Case2" + validTime);
+
                         }
 
                         if(((currentStartTimeHour < startHour) && ((currentEndTimeHour > startHour) && (currentEndTimeHour <= endHour))) ||  (startHour < currentStartTimeHour) && ((endHour > currentStartTimeHour) && (endHour <= currentEndTimeHour))){
                             validTime = false;
+                            Log.d("ghope04999", "checkTimeFrame: Case3" + validTime);
+
                         }
 
                         if((currentStartTimeHour == startHour) && ((currentStartTimeMinute <= startMinute) || (currentStartTimeMinute <=endMinute))){
                             validTime = false;
+                            Log.d("ghope04999", "checkTimeFrame: Case4" + validTime);
+
                         }
 
                         if((currentStartTimeHour > currentEndTimeHour) || ((currentStartTimeHour == currentEndTimeHour) && (currentStartTimeMinute >= currentEndTimeMinute)) ){
                             validTime = false;
+                            Log.d("ghope04999", "checkTimeFrame: Case5" + validTime);
+
                         }
 
                         if(((currentStartTimeHour > startHour) && (currentStartTimeHour < endHour)) || ((currentEndTimeHour > startHour) && (currentEndTimeHour < endHour))){
                             validTime = false;
+                            Log.d("ghope04999", "checkTimeFrame: Case6" + validTime);
+
                         }
+
+                        */
+
+
                     }
                 }
                 return validTime;
