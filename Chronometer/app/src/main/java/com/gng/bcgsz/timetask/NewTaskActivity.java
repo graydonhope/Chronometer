@@ -18,6 +18,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -55,6 +58,7 @@ public class NewTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         this.context = getApplicationContext();
         super.onCreate(savedInstanceState);
+        JodaTimeAndroid.init(this);
         this.storedTaskManager = new StoredTaskManager();
         setContentView(R.layout.activity_newtask);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(CHRONO_BLACK));
